@@ -1,0 +1,94 @@
+{
+  "wins": [
+    {
+      "alwaysOnTop": false,
+      "focused": false,
+      "height": 800,
+      "id": 1,
+      "incognito": false,
+      "left": 0,
+      "state": "normal",
+      "tabs": [
+        {
+          "active": false,
+          "audible": false,
+          "autoDiscardable": true,
+          "discarded": false,
+          "favIconUrl": "https://www.google.com/favicon.ico",
+          "groupId": 1,
+          "height": 800,
+          "highlighted": false,
+          "id": 1,
+          "incognito": false,
+          "index": 1,
+          "mutedInfo": {
+            "muted": false
+          },
+          "pinned": false,
+          "selected": false,
+          "status": "complete",
+          "title": "Google Search",
+          "url": "https://www.google.com/",
+          "width": 1024,
+          "windowId": 1
+        }
+      ],
+      "top": 0,
+      "type": "normal",
+      "width": 1024
+    },
+    {
+      "alwaysOnTop": false,
+      "focused": false,
+      "height": 800,
+      "id": 2,
+      "incognito": false,
+      "left": 0,
+      "state": "normal",
+      "tabs": [
+        {
+          "active": false,
+          "audible": false,
+          "autoDiscardable": true,
+          "discarded": false,
+          "favIconUrl": "https://www.apple.com/favicon.ico",
+          "groupId": 2,
+          "height": 800,
+          "highlighted": false,
+          "id": 2,
+          "incognito": false,
+          "index": 1,
+          "mutedInfo": {
+            "muted": false
+          },
+          "pinned": false,
+          "selected": false,
+          "status": "complete",
+          "title": "Apple",
+          "url": "https://www.apple.com/",
+          "width": 1024,
+          "windowId": 2
+        }
+      ],
+      "top": 0,
+      "type": "normal",
+      "width": 1024
+    }
+  ],
+  "tabGroups": [
+    {
+      "collapsed": false,
+      "color": "grey",
+      "id": 1,
+      "title": "google",
+      "windowId": 1
+    },
+    {
+      "collapsed": false,
+      "color": "grey",
+      "id": 2,
+      "title": "apple",
+      "windowId": 2
+    }
+  ]
+}

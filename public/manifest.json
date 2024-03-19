@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "TabKeeper",
+  "version": "1.0",
+  "description": "TabKeeper manages tabs and tab groups for your browser",
+  "permissions": ["storage", "tabs", "tabGroups"],
+  "author": "xiaoliang.zero@gmail.com",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html"
+  }
+}
