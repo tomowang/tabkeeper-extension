@@ -30,7 +30,7 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='container mx-auto min-w-128'>
         {wins.map((win, index) => {
           // win.id may be undefined, use index for key
           return <Window key={index} win={win} groups={groups}/>

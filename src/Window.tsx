@@ -42,7 +42,7 @@ function Window({win, groups}: {win: chrome.windows.Window, groups: TabGroups}) 
     tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]}/>);
   }
 
-  return <div>
+  return <div className='border rounded-md shadow m-2 p-4 flex flex-wrap'>
     {tabs}
   </div>
 }
