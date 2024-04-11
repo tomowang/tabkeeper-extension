@@ -25,14 +25,14 @@ function Window({win, groups}: {win: chrome.windows.Window, groups: TabGroups}) 
         group = [];
       }
       if (tab.groupId === TAB_GROUP_ID_NONE) {
-        tabs.push(<Tab key={tab.id} tab={tab} className='p-1'></Tab>)
+        tabs.push(<Tab key={tab.id} tab={tab} className='p-0.5'></Tab>)
       } else {
         group.push(tab);
       }
       groupId = tab.groupId;
     } else {
       if (tab.groupId === TAB_GROUP_ID_NONE) {
-        tabs.push(<Tab key={tab.id} tab={tab} className='p-1'></Tab>)
+        tabs.push(<Tab key={tab.id} tab={tab} className='p-0.5'></Tab>)
       } else {
         group.push(tab);
       }
@@ -42,7 +42,7 @@ function Window({win, groups}: {win: chrome.windows.Window, groups: TabGroups}) 
     tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]}/>);
   }
 
-  return <div className='border rounded-md shadow m-2 p-4 flex flex-wrap'>
+  return <div className='border rounded-md shadow m-2 p-4 flex flex-wrap gap-0.5'>
     {tabs}
   </div>
 }
