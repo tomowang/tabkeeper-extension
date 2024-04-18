@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import mock from './assets/mock.json'
 import Window from './Window'
 import { TabGroups } from './type'
 
@@ -8,17 +7,12 @@ function App() {
   const [groups, setGroups] = useState<TabGroups>({})
   useEffect(() => {
     const fetchData = async function() {
-      let wins: chrome.windows.Window[], tabGroups: chrome.tabGroups.TabGroup[];
       const groups: TabGroups = {}
-      if (chrome?.windows) { // extension environment
-        wins = await chrome.windows.getAll({
-          populate: true, // populates tabs property
-          windowTypes: ['normal'],
-        });
-        tabGroups = await chrome.tabGroups.query({});
-      } else {
-        ({wins, tabGroups} = mock as {wins: chrome.windows.Window[], tabGroups: chrome.tabGroups.TabGroup[]})
-      }
+      const wins = await chrome.windows.getAll({
+        populate: true, // populates tabs property
+        windowTypes: ['normal'],
+      });
+      const tabGroups = await chrome.tabGroups.query({});
       tabGroups.forEach(group => {
         groups[group.id] = group;
       });
