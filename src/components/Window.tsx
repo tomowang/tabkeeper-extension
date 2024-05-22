@@ -1,4 +1,4 @@
-import { TabGroups } from './type'
+import { TabGroups } from '../type'
 import Tab from './Tab'
 import TabGroup from './TabGroup'
 

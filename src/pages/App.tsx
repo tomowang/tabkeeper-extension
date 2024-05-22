@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import Window from './Window'
-import { TabGroups } from './type'
+import Window from '@/components/Window'
+import { TabGroups } from '@/type'
 
 function App() {
   const [wins, setWins] = useState<chrome.windows.Window[]>([])
