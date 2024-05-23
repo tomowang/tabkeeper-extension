@@ -6,11 +6,10 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import App from './pages/App.tsx'
-import SessionBox from './pages/SessionBox.tsx';
 import './index.css'
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
+import { menus } from './utils/const';
 
 
 const router = createBrowserRouter([
@@ -18,16 +17,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "home",
-        element: <App />,
-      },
-      {
-        path: "session-box",
-        element: <SessionBox />,
-      },
-    ],
+    children: menus.map((menu) => {
+      return {
+        path: menu.path,
+        element: menu.element,
+      }
+    }),
   },
 ]);
 
