@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Window from '@/components/Window'
 import { TabGroups } from '@/type'
 
-function App() {
+function TabKeeper() {
   const [wins, setWins] = useState<chrome.windows.Window[]>([])
   const [groups, setGroups] = useState<TabGroups>({})
   useEffect(() => {
@@ -18,6 +18,7 @@ function App() {
       });
       wins.forEach(win => {
         win.tabs?.forEach(tab => {
+          // TODO: use rules to apply favIconUrl and support Edge URLs
           if (tab.url?.startsWith('chrome://extensions/')) {
             tab.favIconUrl = "images/extension-icon.svg";
           } else if (tab.url?.startsWith('chrome://newtab') ?? tab.url?.startsWith('chrome://new-tab-page') ?? tab.url?.startsWith('chrome://whats-new/')) {
@@ -39,7 +40,7 @@ function App() {
 
   return (
     <>
-      <div className='container mx-auto min-w-128'>
+      <div className='mx-auto flex flex-wrap gap-2'>
         {wins.map((win, index) => {
           // win.id may be undefined, use index for key
           return <Window key={index} win={win} groups={groups}/>
@@ -49,4 +50,4 @@ function App() {
   )
 }
 
-export default App
+export default TabKeeper

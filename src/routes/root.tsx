@@ -15,7 +15,7 @@ export default function Root() {
             })}
           </ul>
         </nav>
-        <main className="w-full">
+        <main className="container w-full p-2">
           <Outlet />
         </main>
       </div>

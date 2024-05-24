@@ -1,18 +1,18 @@
 import {IMenu} from "@/types";
-import App from '@/pages/App'
+import TabKeeper from '@/pages/TabKeeper';
 import SessionBox from '@/pages/SessionBox';
 import AutoGroup from '@/pages/AutoGroup';
 import General from '@/pages/General';
 
-import { FaHome } from "react-icons/fa";
+import { TfiLayoutTab } from "react-icons/tfi";
 import { PiTabsDuotone, PiGear } from "react-icons/pi";
 import { LuGroup } from "react-icons/lu";
 
 export const menus: IMenu[] = [{
   path: 'home',
-  title: 'Home',
-  icon: FaHome,
-  element: <App />,
+  title: 'TabKeeper',
+  icon: TfiLayoutTab,
+  element: <TabKeeper />,
 }, {
   path: 'session-box',
   title: 'Session Box',
