@@ -25,14 +25,14 @@ function Window({win, groups}: {win: chrome.windows.Window, groups: TabGroups}) 
         group = [];
       }
       if (tab.groupId === TAB_GROUP_ID_NONE) {
-        tabs.push(<Tab key={tab.id} tab={tab} className='p-1'></Tab>)
+        tabs.push(<Tab key={tab.id} tab={tab}></Tab>)
       } else {
         group.push(tab);
       }
       groupId = tab.groupId;
     } else {
       if (tab.groupId === TAB_GROUP_ID_NONE) {
-        tabs.push(<Tab key={tab.id} tab={tab} className='p-1'></Tab>)
+        tabs.push(<Tab key={tab.id} tab={tab}></Tab>)
       } else {
         group.push(tab);
       }
