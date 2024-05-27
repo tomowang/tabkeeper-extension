@@ -8,7 +8,14 @@ import {
   Badge,
 } from '@chakra-ui/react'
 
+
 export default function Tab({tab}: {tab: chrome.tabs.Tab}) {
+  async function handleClick() {
+    if (tab.id !== undefined) { // undefined if tab is not in a window
+      await chrome.tabs.update(tab.id, { active: true } as chrome.tabs.UpdateProperties);
+    }
+  }
+
   // https://developer.chrome.com/docs/extensions/reference/api/tabs#type-TabStatus
   let statusColor = "yellow";
   if (tab.status === "complete") {
@@ -18,7 +25,7 @@ export default function Tab({tab}: {tab: chrome.tabs.Tab}) {
   }
   return <Popover trigger='hover'>
     <PopoverTrigger>
-      <div className={"border rounded flex items-center p-1" + (tab.active ? " border-blue-600" : "")}>
+      <div onClick={() => void handleClick()} className={"border rounded flex items-center p-1 cursor-pointer" + (tab.active ? " border-blue-600" : "")}>
         <img src={tab.favIconUrl} className={"w-5 h-5" + (tab.status === "unloaded" ? " rounded-full border-2 border-slate-500 border-dashed" : "")} />
       </div>
     </PopoverTrigger>

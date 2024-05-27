@@ -12,7 +12,6 @@ function TabKeeper() {
         populate: true, // populates tabs property
         windowTypes: ['normal'],
       });
-      console.log(wins);
       const tabGroups = await chrome.tabGroups.query({});
       tabGroups.forEach(group => {
         groups[group.id] = group;
