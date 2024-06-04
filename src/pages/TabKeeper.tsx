@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import Window from '@/components/Window'
+import TabInfo from '@/components/TabInfo'
 import { TabGroups, TabMenuAction } from '@/types'
 
 function TabKeeper() {
   const [wins, setWins] = useState<chrome.windows.Window[]>([])
   const [groups, setGroups] = useState<TabGroups>({})
+  const [viewTab, setViewTab] = useState<chrome.tabs.Tab|null>()
   const fetchData = async function() {
     const groups: TabGroups = {}
     const wins = await chrome.windows.getAll({
@@ -50,18 +52,26 @@ function TabKeeper() {
     await fetchData()
   }
 
+  function handleTabMouseEvent(tab: chrome.tabs.Tab|null) {
+    console.log(tab)
+    setViewTab(tab);
+  }
+
   return (
-    <>
+    <div className='flex flex-col h-full'>
       <div className='mx-auto flex flex-wrap gap-2'>
         {wins.map((win, index) => {
           // win.id may be undefined, use index for key
           return <Window key={index} win={win} groups={groups} handleClickTabMenu={
             (tabId: number | undefined, action: TabMenuAction) => void (async () => {
               await handleClickTabMenu(tabId, action)
-            })()}/>
+            })()}
+            handleTabMouseEvent={handleTabMouseEvent}/>
         })}
       </div>
-    </>
+      <div className='grow'></div>
+      {viewTab && <TabInfo tab={viewTab}/>}
+    </div>
   )
 }
 

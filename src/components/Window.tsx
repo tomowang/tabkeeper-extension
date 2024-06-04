@@ -10,6 +10,7 @@ interface WindowProps {
   win: chrome.windows.Window,
   groups: TabGroups,
   handleClickTabMenu: (id: number|undefined, action: TabMenuAction) => void
+  handleTabMouseEvent: (tab: chrome.tabs.Tab|null) => void
 }
 
 /**
@@ -19,7 +20,7 @@ interface WindowProps {
  * @param {TabGroups} groups - Object containing tab groups information
  * @return {JSX.Element} The rendered tabs and tab groups in a <div> element
  */
-function Window({win, groups, handleClickTabMenu}: WindowProps) {
+function Window({win, groups, handleClickTabMenu, handleTabMouseEvent}: WindowProps) {
   let groupId: number = TAB_GROUP_ID_NONE
 
   const tabs = [];
@@ -27,25 +28,33 @@ function Window({win, groups, handleClickTabMenu}: WindowProps) {
   win.tabs?.forEach(tab => {
     if (tab.groupId !== groupId) {
       if (group.length > 0) {
-        tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]} handleClickTabMenu={handleClickTabMenu}/>);
+        tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]}
+          handleClickTabMenu={handleClickTabMenu}
+          handleTabMouseEvent={handleTabMouseEvent}/>);
         group = [];
       }
       if (tab.groupId === TAB_GROUP_ID_NONE) {
-        tabs.push(<Tab key={tab.id} tab={tab} handleClickTabMenu={handleClickTabMenu}/>)
+        tabs.push(<Tab key={tab.id} tab={tab}
+          handleClickTabMenu={handleClickTabMenu}
+          handleTabMouseEvent={handleTabMouseEvent}/>)
       } else {
         group.push(tab);
       }
       groupId = tab.groupId;
     } else {
       if (tab.groupId === TAB_GROUP_ID_NONE) {
-        tabs.push(<Tab key={tab.id} tab={tab} handleClickTabMenu={handleClickTabMenu}/>)
+        tabs.push(<Tab key={tab.id} tab={tab}
+          handleClickTabMenu={handleClickTabMenu}
+          handleTabMouseEvent={handleTabMouseEvent}/>)
       } else {
         group.push(tab);
       }
     }
   });
   if (group.length > 0) {
-    tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]} handleClickTabMenu={handleClickTabMenu}/>);
+    tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]}
+      handleClickTabMenu={handleClickTabMenu}
+      handleTabMouseEvent={handleTabMouseEvent}/>);
   }
 
   return <div className='border rounded-md shadow p-2 flex flex-wrap items-center gap-1'>
