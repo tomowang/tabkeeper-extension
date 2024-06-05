@@ -13,7 +13,7 @@ export default function TabInfo({tab}: TabInfoProps) {
     statusColor = "gray";
   }
   return (
-    <Card>
+    <Card size='sm'>
       <CardBody className="max-w-full w-full">
         <Stack direction='column' spacing='0.5'>
           <Text as='span' className="truncate">{tab.title}</Text>
