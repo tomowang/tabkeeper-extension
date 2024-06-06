@@ -9,10 +9,12 @@ import {
   Box,
   VStack,
 } from '@chakra-ui/react'
-import { RiFocus3Line, RiRefreshLine, RiCloseLine, RiUnpinLine, RiPushpinLine } from "react-icons/ri";
+import { RiFocus3Line, RiCloseLine, RiUnpinLine, RiPushpinLine } from "react-icons/ri";
 import { HiDuplicate } from "react-icons/hi";
 import { PiMemory } from "react-icons/pi";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
+import { ElementType } from 'react';
+import { IoMdRefresh } from "react-icons/io";
 
 
 interface TabProps {
@@ -32,52 +34,36 @@ export default function Tab({tab, handleClickTabMenu, handleTabMouseEvent}: TabP
     <PopoverContent w='auto' _focusVisible={{ outline: "none" }}>
       <PopoverBody>
         <VStack as='ul' spacing={0.5} alignItems='start'>
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Activate)}>
-            <Icon as={RiFocus3Line} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Activate</Box>
-          </Flex>
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Reload)}>
-            <Icon as={RiRefreshLine} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Reload</Box>
-          </Flex>
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Close)}>
-            <Icon as={RiCloseLine} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Close</Box>
-          </Flex>
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Duplicate)}>
-            <Icon as={HiDuplicate} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Duplicate</Box>
-          </Flex>
+          { !tab.active && <TabMenuItem icon={RiFocus3Line} title='Activate' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Activate)}/> }
+          <TabMenuItem icon={IoMdRefresh} title='Reload' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Reload)}/>
+          <TabMenuItem icon={RiCloseLine} title='Close' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Close)}/>
+          <TabMenuItem icon={HiDuplicate} title='Duplicate' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Duplicate)}/>
           { tab.pinned ?
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unpin)}>
-            <Icon as={RiUnpinLine} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Unpin</Box>
-          </Flex>
+          <TabMenuItem icon={RiUnpinLine} title='Unpin' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unpin)}/>
           :
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Pin)}>
-            <Icon as={RiPushpinLine} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Pin</Box>
-          </Flex>
+          <TabMenuItem icon={RiPushpinLine} title='Pin' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Pin)}/>
           }
-          { tab.status !== "unloaded" &&
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unload)}>
-            <Icon as={PiMemory} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Unload</Box>
-          </Flex>
-          }
+          { tab.status !== "unloaded" && <TabMenuItem icon={PiMemory} title='Unload' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unload)}/> }
           { tab.audible && (tab.mutedInfo?.muted ?
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unmute)}>
-            <Icon as={TbVolume} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Unmute</Box>
-          </Flex>
+          <TabMenuItem icon={TbVolume} title='Unmute' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unmute)}/>
           :
-          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Mute)}>
-            <Icon as={TbVolumeOff} w={6} h={6}/>
-            <Box as='span' lineHeight={6}>Mute</Box>
-          </Flex>
+          <TabMenuItem icon={TbVolumeOff} title='Mute' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Mute)}/>
           )}
         </VStack>
       </PopoverBody>
     </PopoverContent>
   </Popover>
+}
+
+interface TabMenuItemProps {
+  icon: ElementType,
+  title: string,
+  onClick: () => void,
+}
+
+function TabMenuItem({icon, title, onClick}: TabMenuItemProps) {
+  return <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={onClick}>
+    <Icon as={icon} w={6} h={6}/>
+    <Box as='span' lineHeight={6}>{title}</Box>
+  </Flex>
 }
