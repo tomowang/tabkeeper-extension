@@ -74,7 +74,13 @@ function TabKeeper() {
         break;
     }
     await fetchData()
-    setViewTab(await chrome.tabs.get(tabId))
+    try {
+      // tab may have been closed by the time we get here
+      setViewTab(await chrome.tabs.get(tabId))
+    } catch (e) {
+      console.error(e)
+      setViewTab(null)
+    }
   }
 
   function handleTabMouseEvent(tab: chrome.tabs.Tab|null) {
