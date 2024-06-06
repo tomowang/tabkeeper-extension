@@ -8,7 +8,7 @@ export default function Root() {
   return (
     <>
       <div className="flex w-[800px] h-[600px]">
-        <nav className="w-1/5 min-w-1/5 min-h-full p-2">
+        <nav className="w-1/5 min-w-1/5 min-h-full p-2 border-r-2 border-stone-300">
           <ul>
             {menus.map((menu, i)=>{
               return <NavItem menu={menu} key={i}></NavItem>
