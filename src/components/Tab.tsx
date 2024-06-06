@@ -1,3 +1,4 @@
+import { ElementType } from 'react';
 import { TabMenuAction } from '@/types';
 import {
   Popover,
@@ -13,8 +14,8 @@ import { RiFocus3Line, RiCloseLine, RiUnpinLine, RiPushpinLine } from "react-ico
 import { HiDuplicate } from "react-icons/hi";
 import { PiMemory } from "react-icons/pi";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
-import { ElementType } from 'react';
 import { IoMdRefresh } from "react-icons/io";
+import { TbHighlight, TbHighlightOff } from "react-icons/tb";
 
 
 interface TabProps {
@@ -38,6 +39,10 @@ export default function Tab({tab, handleClickTabMenu, handleTabMouseEvent}: TabP
           <TabMenuItem icon={IoMdRefresh} title='Reload' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Reload)}/>
           <TabMenuItem icon={RiCloseLine} title='Close' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Close)}/>
           <TabMenuItem icon={HiDuplicate} title='Duplicate' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Duplicate)}/>
+          { !tab.active && (tab.highlighted ?
+            <TabMenuItem icon={TbHighlightOff} title='Unhighlight' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unhighlight)}/> :
+            <TabMenuItem icon={TbHighlight} title='Highlight' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Highlight)}/>
+          ) }
           { tab.pinned ?
           <TabMenuItem icon={RiUnpinLine} title='Unpin' onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unpin)}/>
           :

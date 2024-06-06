@@ -57,6 +57,12 @@ function TabKeeper() {
       case TabMenuAction.Duplicate:
         await chrome.tabs.duplicate(tabId)
         break;
+      case TabMenuAction.Highlight:
+        await chrome.tabs.update(tabId, { highlighted: true } as chrome.tabs.UpdateProperties)
+        break;
+      case TabMenuAction.Unhighlight:
+        await chrome.tabs.update(tabId, { highlighted: false } as chrome.tabs.UpdateProperties)
+        break;
       case TabMenuAction.Pin:
         await chrome.tabs.update(tabId, { pinned: true } as chrome.tabs.UpdateProperties)
         break;
