@@ -48,12 +48,36 @@ function TabKeeper() {
       case TabMenuAction.Activate:
         await chrome.tabs.update(tabId, { active: true } as chrome.tabs.UpdateProperties)
         break;
+      case TabMenuAction.Reload:
+        await chrome.tabs.reload(tabId)
+        break;
+      case TabMenuAction.Close:
+        await chrome.tabs.remove(tabId)
+        break;
+      case TabMenuAction.Duplicate:
+        await chrome.tabs.duplicate(tabId)
+        break;
+      case TabMenuAction.Pin:
+        await chrome.tabs.update(tabId, { pinned: true } as chrome.tabs.UpdateProperties)
+        break;
+      case TabMenuAction.Unpin:
+        await chrome.tabs.update(tabId, { pinned: false } as chrome.tabs.UpdateProperties)
+        break;
+      case TabMenuAction.Unload:
+        await chrome.tabs.discard(tabId)
+        break;
+      case TabMenuAction.Mute:
+        await chrome.tabs.update(tabId, { muted: true } as chrome.tabs.UpdateProperties)
+        break;
+      case TabMenuAction.Unmute:
+        await chrome.tabs.update(tabId, { muted: false } as chrome.tabs.UpdateProperties)
+        break;
     }
     await fetchData()
+    setViewTab(await chrome.tabs.get(tabId))
   }
 
   function handleTabMouseEvent(tab: chrome.tabs.Tab|null) {
-    console.log(tab)
     setViewTab(tab);
   }
 

@@ -22,7 +22,11 @@ export default function TabInfo({tab}: TabInfoProps) {
             <Badge colorScheme={statusColor}>{tab.status}</Badge>
             {tab.pinned && <Badge colorScheme='green'>Pinned</Badge>}
             {tab.active && <Badge colorScheme='blue'>Active</Badge>}
-            {tab.mutedInfo?.muted && <Badge colorScheme='red'>Muted</Badge>}
+            {tab.audible && (
+              tab.mutedInfo?.muted ?
+              <Badge colorScheme='red'>Muted</Badge>:
+              <Badge colorScheme='purple'>Audible</Badge>
+            )}
           </Stack>
         </Stack>
       </CardBody>

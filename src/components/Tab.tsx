@@ -7,8 +7,12 @@ import {
   Flex,
   Icon,
   Box,
+  VStack,
 } from '@chakra-ui/react'
-import { RiFocus3Line } from "react-icons/ri";
+import { RiFocus3Line, RiRefreshLine, RiCloseLine, RiUnpinLine, RiPushpinLine } from "react-icons/ri";
+import { HiDuplicate } from "react-icons/hi";
+import { PiMemory } from "react-icons/pi";
+import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
 
 interface TabProps {
@@ -27,12 +31,52 @@ export default function Tab({tab, handleClickTabMenu, handleTabMouseEvent}: TabP
     </PopoverTrigger>
     <PopoverContent w='auto' _focusVisible={{ outline: "none" }}>
       <PopoverBody>
-        <ul>
-          <Flex as='li' cursor='pointer' gap={1} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Activate)}>
+        <VStack as='ul' spacing={0.5} alignItems='start'>
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Activate)}>
             <Icon as={RiFocus3Line} w={6} h={6}/>
             <Box as='span' lineHeight={6}>Activate</Box>
           </Flex>
-        </ul>
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Reload)}>
+            <Icon as={RiRefreshLine} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Reload</Box>
+          </Flex>
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Close)}>
+            <Icon as={RiCloseLine} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Close</Box>
+          </Flex>
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Duplicate)}>
+            <Icon as={HiDuplicate} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Duplicate</Box>
+          </Flex>
+          { tab.pinned ?
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unpin)}>
+            <Icon as={RiUnpinLine} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Unpin</Box>
+          </Flex>
+          :
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Pin)}>
+            <Icon as={RiPushpinLine} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Pin</Box>
+          </Flex>
+          }
+          { tab.status !== "unloaded" &&
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unload)}>
+            <Icon as={PiMemory} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Unload</Box>
+          </Flex>
+          }
+          { tab.audible && (tab.mutedInfo?.muted ?
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unmute)}>
+            <Icon as={TbVolume} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Unmute</Box>
+          </Flex>
+          :
+          <Flex as='li' cursor='pointer' gap={2} _hover={{ color: 'blue.500'}} onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Mute)}>
+            <Icon as={TbVolumeOff} w={6} h={6}/>
+            <Box as='span' lineHeight={6}>Mute</Box>
+          </Flex>
+          )}
+        </VStack>
       </PopoverBody>
     </PopoverContent>
   </Popover>

@@ -11,4 +11,14 @@ export interface IMenu {
 
 export enum TabMenuAction {
   Activate,
+  Reload,
+  Close,
+  Duplicate,
+  Mute,
+  Unmute,
+  Pin,
+  Unpin,
+  Highlight,
+  Unhighlight,
+  Unload,
 }
