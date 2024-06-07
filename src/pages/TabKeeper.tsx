@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react'
 import Window from '@/components/Window'
 import TabInfo from '@/components/TabInfo'
 import { TabGroups, TabMenuAction } from '@/types'
+import { Box, Flex, Spacer } from '@chakra-ui/react'
+import ToolBar from '@/components/ToolBar'
 
 function TabKeeper() {
   const [wins, setWins] = useState<chrome.windows.Window[]>([])
   const [groups, setGroups] = useState<TabGroups>({})
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab|null>()
+  const [search, setSearch] = useState<string>('')
   const fetchData = async function() {
     const groups: TabGroups = {}
     const wins = await chrome.windows.getAll({
@@ -94,8 +97,9 @@ function TabKeeper() {
   }
 
   return (
-    <div className='flex flex-col h-full'>
-      <div className='mx-auto flex flex-wrap gap-2'>
+    <Flex direction='column' h='full' gap={2}>
+      <ToolBar search={search} setSearch={setSearch}></ToolBar>
+      <Flex wrap='wrap' mx='auto' gap={2}>
         {wins.map((win, index) => {
           // win.id may be undefined, use index for key
           return <Window key={index} win={win} groups={groups} handleClickTabMenu={
@@ -104,10 +108,12 @@ function TabKeeper() {
             })()}
             handleTabMouseEvent={handleTabMouseEvent}/>
         })}
-      </div>
-      <div className='grow'></div>
-      {viewTab && <TabInfo tab={viewTab}/>}
-    </div>
+      </Flex>
+      <Spacer/>
+      <Box>
+        {viewTab && <TabInfo tab={viewTab}/>}
+      </Box>
+    </Flex>
   )
 }
 
