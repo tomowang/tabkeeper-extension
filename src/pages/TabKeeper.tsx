@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
 import Window from '@/components/Window'
-import TabInfo from '@/components/TabInfo'
 import { ITab, IWindow, TabGroups, TabMenuAction } from '@/types'
 import { Box, Flex, Spacer } from '@chakra-ui/react'
 import ToolBar from '@/components/ToolBar'
+import StatusBar from '@/components/StatusBar'
 
 function TabKeeper() {
   const [wins, setWins] = useState<IWindow[]>([])
   const [groups, setGroups] = useState<TabGroups>({})
-  const [viewTab, setViewTab] = useState<chrome.tabs.Tab|null>()
+  const [viewTab, setViewTab] = useState<chrome.tabs.Tab|null>(null)
   const [search, setSearch] = useState<string>('')
+  const [matchedCount, setMatchedCount] = useState<number>(0)
   const fetchData = useCallback(async function() {
     const groups: TabGroups = {}
     const wins = await chrome.windows.getAll({
@@ -20,6 +21,7 @@ function TabKeeper() {
     tabGroups.forEach(group => {
       groups[group.id] = group;
     });
+    let matchedCount = 0;
     const ws = wins.map(win => {
       win.tabs?.forEach(tab => {
         // TODO: use rules to apply favIconUrl and support Edge URLs
@@ -49,6 +51,7 @@ function TabKeeper() {
             const url = tab.url?.toLowerCase()
             if (title?.match(regex) ?? url?.match(regex)) {
               t.tkMatched = true
+              matchedCount++
             }
           }
           return t
@@ -58,6 +61,7 @@ function TabKeeper() {
     })
     setWins(ws)
     setGroups(groups)
+    setMatchedCount(matchedCount)
   }, [search])
   useEffect(() => {
     fetchData().catch(console.error)
@@ -131,7 +135,7 @@ function TabKeeper() {
       </Flex>
       <Spacer/>
       <Box>
-        {viewTab && <TabInfo tab={viewTab}/>}
+        <StatusBar search={search} matchedCount={matchedCount} tab={viewTab}/>
       </Box>
     </Flex>
   )
