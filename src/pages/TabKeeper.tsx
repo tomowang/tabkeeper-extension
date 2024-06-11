@@ -10,7 +10,7 @@ function TabKeeper() {
   const [groups, setGroups] = useState<TabGroups>({})
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab|null>(null)
   const [search, setSearch] = useState<string>('')
-  const [matchedCount, setMatchedCount] = useState<number>(0)
+  const [matchedSearch, setMatchedSearch] = useState<(number | undefined)[]>([])
   const fetchData = useCallback(async function() {
     const groups: TabGroups = {}
     const wins = await chrome.windows.getAll({
@@ -21,7 +21,7 @@ function TabKeeper() {
     tabGroups.forEach(group => {
       groups[group.id] = group;
     });
-    let matchedCount = 0;
+    const matchedSearch: (number | undefined)[] = [];
     const ws = wins.map(win => {
       win.tabs?.forEach(tab => {
         // TODO: use rules to apply favIconUrl and support Edge URLs
@@ -51,7 +51,7 @@ function TabKeeper() {
             const url = tab.url?.toLowerCase()
             if (title?.match(regex) ?? url?.match(regex)) {
               t.tkMatched = true
-              matchedCount++
+              matchedSearch.push(tab.id)
             }
           }
           return t
@@ -61,7 +61,7 @@ function TabKeeper() {
     })
     setWins(ws)
     setGroups(groups)
-    setMatchedCount(matchedCount)
+    setMatchedSearch(matchedSearch)
   }, [search])
   useEffect(() => {
     fetchData().catch(console.error)
@@ -135,7 +135,7 @@ function TabKeeper() {
       </Flex>
       <Spacer/>
       <Box>
-        <StatusBar search={search} matchedCount={matchedCount} tab={viewTab}/>
+        <StatusBar search={search} matchedSearch={matchedSearch} tab={viewTab}/>
       </Box>
     </Flex>
   )

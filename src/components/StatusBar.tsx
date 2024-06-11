@@ -2,11 +2,11 @@ import { Badge, Card, CardBody, Text, Stack } from "@chakra-ui/react";
 
 interface StatusBarProps {
   search: string;
-  matchedCount: number;
+  matchedSearch: (number | undefined)[];
   tab: chrome.tabs.Tab | null;
 }
 
-export default function StatusBar({search, matchedCount, tab}: StatusBarProps) {
+export default function StatusBar({search, matchedSearch, tab}: StatusBarProps) {
   // https://developer.chrome.com/docs/extensions/reference/api/tabs#type-TabStatus
   let statusColor = "yellow";
   if (tab?.status === "complete") {
@@ -19,7 +19,7 @@ export default function StatusBar({search, matchedCount, tab}: StatusBarProps) {
       <CardBody className="max-w-full w-full">
         <Stack direction='column' spacing='0.5'>
           { search &&
-            <Text className="truncate"><Badge variant='outline' colorScheme="yellow">{matchedCount}</Badge> tabs matched search term</Text>
+            <Text className="truncate"><Badge variant='outline' colorScheme="yellow">{matchedSearch.length}</Badge> tabs matched search term</Text>
           }
           { tab &&
             <>
