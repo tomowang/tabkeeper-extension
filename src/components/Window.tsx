@@ -1,4 +1,4 @@
-import { TabGroups, TabMenuAction } from '@/types'
+import { ITab, IWindow, TabGroups, TabMenuAction } from '@/types'
 import Tab from './Tab'
 import TabGroup from './TabGroup'
 
@@ -7,7 +7,7 @@ import TabGroup from './TabGroup'
 const TAB_GROUP_ID_NONE = -1
 
 interface WindowProps {
-  win: chrome.windows.Window,
+  win: IWindow,
   groups: TabGroups,
   handleClickTabMenu: (id: number|undefined, action: TabMenuAction) => void
   handleTabMouseEvent: (tab: chrome.tabs.Tab|null) => void
@@ -24,8 +24,8 @@ function Window({win, groups, handleClickTabMenu, handleTabMouseEvent}: WindowPr
   let groupId: number = TAB_GROUP_ID_NONE
 
   const tabs = [];
-  let group: chrome.tabs.Tab[] = [];
-  win.tabs?.forEach(tab => {
+  let group: ITab[] = [];
+  win.tkTabs.forEach(tab => {
     if (tab.groupId !== groupId) {
       if (group.length > 0) {
         tabs.push(<TabGroup key={groupId} tabs={group} group={groups[groupId]}

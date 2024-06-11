@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Window from '@/components/Window'
 import TabInfo from '@/components/TabInfo'
-import { TabGroups, TabMenuAction } from '@/types'
+import { ITab, IWindow, TabGroups, TabMenuAction } from '@/types'
 import { Box, Flex, Spacer } from '@chakra-ui/react'
 import ToolBar from '@/components/ToolBar'
 
 function TabKeeper() {
-  const [wins, setWins] = useState<chrome.windows.Window[]>([])
+  const [wins, setWins] = useState<IWindow[]>([])
   const [groups, setGroups] = useState<TabGroups>({})
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab|null>()
   const [search, setSearch] = useState<string>('')
-  const fetchData = async function() {
+  const fetchData = useCallback(async function() {
     const groups: TabGroups = {}
     const wins = await chrome.windows.getAll({
       populate: true, // populates tabs property
@@ -20,7 +20,7 @@ function TabKeeper() {
     tabGroups.forEach(group => {
       groups[group.id] = group;
     });
-    wins.forEach(win => {
+    const ws = wins.map(win => {
       win.tabs?.forEach(tab => {
         // TODO: use rules to apply favIconUrl and support Edge URLs
         if (tab.url?.startsWith('chrome://extensions/')) {
@@ -35,13 +35,33 @@ function TabKeeper() {
           tab.favIconUrl = "images/globe-line-icon.svg";
         }
       })
+      const w: IWindow = {...win, tkTabs: []}
+      if (win.tabs) {
+        w.tkTabs = win.tabs?.map(tab => {
+          const t: ITab = {...tab, ...{
+            tkFilter: !!search,
+            tkMatched: false,
+            tkColor: 'yellow',
+          }}
+          if (search) {
+            const regex = new RegExp(search, 'i')
+            const title = tab.title?.toLowerCase()
+            const url = tab.url?.toLowerCase()
+            if (title?.match(regex) ?? url?.match(regex)) {
+              t.tkMatched = true
+            }
+          }
+          return t
+        })
+      }
+      return w
     })
-    setWins(wins)
+    setWins(ws)
     setGroups(groups)
-  }
+  }, [search])
   useEffect(() => {
     fetchData().catch(console.error)
-  }, [setWins, setGroups])
+  }, [fetchData])
 
   async function handleClickTabMenu(tabId: number | undefined, action: TabMenuAction) {
     if (tabId === undefined) { // undefined if tab is not in a window
