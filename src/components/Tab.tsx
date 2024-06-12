@@ -6,8 +6,6 @@ import {
   PopoverContent,
   PopoverBody,
   Flex,
-  Icon,
-  Box,
   VStack,
   Image,
 } from "@chakra-ui/react";
@@ -22,6 +20,7 @@ import { PiMemory } from "react-icons/pi";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 import { IoMdRefresh } from "react-icons/io";
 import { TbHighlight, TbHighlightOff } from "react-icons/tb";
+import ActionMenuItem from "./ActionMenuItem";
 
 interface TabProps {
   tab: ITab;
@@ -89,7 +88,7 @@ export default function Tab({
         <PopoverBody>
           <VStack as="ul" spacing={0.5} alignItems="start">
             {!tab.active && (
-              <TabMenuItem
+              <ActionMenuItem
                 icon={RiFocus3Line}
                 title="Activate"
                 onClick={() =>
@@ -97,17 +96,17 @@ export default function Tab({
                 }
               />
             )}
-            <TabMenuItem
+            <ActionMenuItem
               icon={IoMdRefresh}
               title="Reload"
               onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Reload)}
             />
-            <TabMenuItem
+            <ActionMenuItem
               icon={RiCloseLine}
               title="Close"
               onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Close)}
             />
-            <TabMenuItem
+            <ActionMenuItem
               icon={HiDuplicate}
               title="Duplicate"
               onClick={() =>
@@ -116,7 +115,7 @@ export default function Tab({
             />
             {!tab.active &&
               (tab.highlighted ? (
-                <TabMenuItem
+                <ActionMenuItem
                   icon={TbHighlightOff}
                   title="Unhighlight"
                   onClick={() =>
@@ -124,7 +123,7 @@ export default function Tab({
                   }
                 />
               ) : (
-                <TabMenuItem
+                <ActionMenuItem
                   icon={TbHighlight}
                   title="Highlight"
                   onClick={() =>
@@ -133,20 +132,20 @@ export default function Tab({
                 />
               ))}
             {tab.pinned ? (
-              <TabMenuItem
+              <ActionMenuItem
                 icon={RiUnpinLine}
                 title="Unpin"
                 onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unpin)}
               />
             ) : (
-              <TabMenuItem
+              <ActionMenuItem
                 icon={RiPushpinLine}
                 title="Pin"
                 onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Pin)}
               />
             )}
             {tab.status !== "unloaded" && (
-              <TabMenuItem
+              <ActionMenuItem
                 icon={PiMemory}
                 title="Unload"
                 onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Unload)}
@@ -154,7 +153,7 @@ export default function Tab({
             )}
             {tab.audible &&
               (tab.mutedInfo?.muted ? (
-                <TabMenuItem
+                <ActionMenuItem
                   icon={TbVolume}
                   title="Unmute"
                   onClick={() =>
@@ -162,7 +161,7 @@ export default function Tab({
                   }
                 />
               ) : (
-                <TabMenuItem
+                <ActionMenuItem
                   icon={TbVolumeOff}
                   title="Mute"
                   onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Mute)}
@@ -172,28 +171,5 @@ export default function Tab({
         </PopoverBody>
       </PopoverContent>
     </Popover>
-  );
-}
-
-interface TabMenuItemProps {
-  icon: ElementType;
-  title: string;
-  onClick: () => void;
-}
-
-function TabMenuItem({ icon, title, onClick }: TabMenuItemProps) {
-  return (
-    <Flex
-      as="li"
-      cursor="pointer"
-      gap={2}
-      _hover={{ color: "blue.500" }}
-      onClick={onClick}
-    >
-      <Icon as={icon} w={6} h={6} />
-      <Box as="span" lineHeight={6}>
-        {title}
-      </Box>
-    </Flex>
   );
 }

@@ -32,3 +32,9 @@ export enum TabMenuAction {
   Unhighlight,
   Unload,
 }
+
+export enum TabGroupMenuAction {
+  Ungroup,
+  Collapse,
+  Expand,
+}

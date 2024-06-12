@@ -1,4 +1,10 @@
-import { ITab, IWindow, TabGroups, TabMenuAction } from "@/types";
+import {
+  ITab,
+  IWindow,
+  TabGroupMenuAction,
+  TabGroups,
+  TabMenuAction,
+} from "@/types";
 import Tab from "./Tab";
 import TabGroup from "./TabGroup";
 
@@ -10,6 +16,7 @@ interface WindowProps {
   win: IWindow;
   groups: TabGroups;
   handleClickTabMenu: (id: number | undefined, action: TabMenuAction) => void;
+  handleClickGroupMenu: (id: number, action: TabGroupMenuAction) => void;
   handleTabMouseEvent: (tab: chrome.tabs.Tab | null) => void;
 }
 
@@ -24,6 +31,7 @@ function Window({
   win,
   groups,
   handleClickTabMenu,
+  handleClickGroupMenu,
   handleTabMouseEvent,
 }: WindowProps) {
   let groupId: number = TAB_GROUP_ID_NONE;
@@ -39,6 +47,7 @@ function Window({
             tabs={group}
             group={groups[groupId]}
             handleClickTabMenu={handleClickTabMenu}
+            handleClickGroupMenu={handleClickGroupMenu}
             handleTabMouseEvent={handleTabMouseEvent}
           />
         );
@@ -79,6 +88,7 @@ function Window({
         tabs={group}
         group={groups[groupId]}
         handleClickTabMenu={handleClickTabMenu}
+        handleClickGroupMenu={handleClickGroupMenu}
         handleTabMouseEvent={handleTabMouseEvent}
       />
     );

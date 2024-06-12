@@ -1,6 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import Window from "@/components/Window";
-import { ITab, IWindow, TabGroups, TabMenuAction } from "@/types";
+import {
+  ITab,
+  IWindow,
+  TabGroupMenuAction,
+  TabGroups,
+  TabMenuAction,
+} from "@/types";
 import { Box, Flex, Spacer } from "@chakra-ui/react";
 import ToolBar from "@/components/ToolBar";
 import StatusBar from "@/components/StatusBar";
@@ -146,6 +152,25 @@ function TabKeeper() {
     }
   }
 
+  async function handleClickGroupMenu(
+    groupId: number,
+    action: TabGroupMenuAction
+  ) {
+    switch (action) {
+      case TabGroupMenuAction.Ungroup: {
+        const tabs = await chrome.tabs.query({
+          groupId: groupId,
+        });
+        const ids: number[] = tabs.flatMap((t) =>
+          t.id !== undefined ? [t.id] : []
+        );
+        await chrome.tabs.ungroup(ids);
+        break;
+      }
+    }
+    await fetchData();
+  }
+
   function handleTabMouseEvent(tab: chrome.tabs.Tab | null) {
     setViewTab(tab);
   }
@@ -167,6 +192,14 @@ function TabKeeper() {
               ) =>
                 void (async () => {
                   await handleClickTabMenu(tabId, action);
+                })()
+              }
+              handleClickGroupMenu={(
+                groupId: number,
+                action: TabGroupMenuAction
+              ) =>
+                void (async () => {
+                  await handleClickGroupMenu(groupId, action);
                 })()
               }
               handleTabMouseEvent={handleTabMouseEvent}
