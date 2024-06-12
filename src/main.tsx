@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -11,6 +11,19 @@ import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import { menus } from './utils/const';
 
+const theme = extendTheme({
+  colors: {
+    grey: '#5E6468',
+    blue: '#1B74E8',
+    red: '#D73226',
+    yellow: '#F8AC02',
+    green: '#188139',
+    pink: '#D01A85',
+    purple: '#A143F4',
+    cyan: '#027C84',
+    orange: '#F8913F',
+  },
+})
 
 const router = createBrowserRouter([
   {
@@ -29,7 +42,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>,

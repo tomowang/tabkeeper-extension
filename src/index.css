@@ -1,31 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.color-grey {
-  border-color: #5E6468;
-}
-.color-blue {
-  border-color: #1B74E8;
-}
-.color-red {
-  border-color: #D73226;
-}
-.color-yellow {
-  border-color: #F8AC02;
-}
-.color-green {
-  border-color: #188139;
-}
-.color-pink {
-  border-color: #D01A85;
-}
-.color-purple {
-  border-color: #A143F4;
-}
-.color-cyan {
-  border-color: #027C84;
-}
-.color-orange {
-  border-color: #F8913F;
-}
