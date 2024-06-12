@@ -1,5 +1,3 @@
 export default function SessionBox() {
-  return <>
-    SESSION BOX
-  </>
+  return <>SESSION BOX</>;
 }

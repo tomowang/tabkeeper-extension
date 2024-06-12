@@ -1,5 +1,3 @@
 export default function AutoGroup() {
-  return <>
-    AUTO GROUP
-  </>
+  return <>AUTO GROUP</>;
 }
