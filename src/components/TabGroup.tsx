@@ -46,6 +46,9 @@ export default function TabGroup({
             cursor="pointer"
             borderRadius="md"
             fontSize="sm"
+            minW={5}
+            h={5}
+            lineHeight={5}
             color={gc === "yellow" || gc === "orange" ? "black" : "white"}
           >
             {group.title}
