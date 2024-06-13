@@ -8,9 +8,14 @@ import {
   PopoverContent,
   PopoverBody,
   VStack,
+  Box,
 } from "@chakra-ui/react";
 import ActionMenuItem from "./ActionMenuItem";
 import { FaRegObjectUngroup } from "react-icons/fa";
+import {
+  TbLayoutSidebarLeftCollapse,
+  TbLayoutSidebarRightCollapse,
+} from "react-icons/tb";
 
 interface TabGroupProps {
   tabs: ITab[];
@@ -32,9 +37,10 @@ export default function TabGroup({
     <Flex
       wrap="wrap"
       gap={0.5}
-      p={1}
+      pb={0.5}
       borderBottomColor={gc}
-      borderBottomWidth={2}
+      borderBottomWidth={group.collapsed ? 0 : 2}
+      pt={group.collapsed ? 0.5 : 1}
       alignItems="center"
     >
       <Popover trigger="click" placement="bottom-start" closeOnBlur={true}>
@@ -64,20 +70,39 @@ export default function TabGroup({
                   handleClickGroupMenu(group.id, TabGroupMenuAction.Ungroup)
                 }
               />
+              {group.collapsed ? (
+                <ActionMenuItem
+                  icon={TbLayoutSidebarRightCollapse}
+                  title="Expand"
+                  onClick={() =>
+                    handleClickGroupMenu(group.id, TabGroupMenuAction.Expand)
+                  }
+                />
+              ) : (
+                <ActionMenuItem
+                  icon={TbLayoutSidebarLeftCollapse}
+                  title="Collapse"
+                  onClick={() =>
+                    handleClickGroupMenu(group.id, TabGroupMenuAction.Collapse)
+                  }
+                />
+              )}
             </VStack>
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      {tabs.map((tab) => {
-        return (
-          <Tab
-            key={tab.id}
-            tab={tab}
-            handleClickTabMenu={handleClickTabMenu}
-            handleTabMouseEvent={handleTabMouseEvent}
-          ></Tab>
-        );
-      })}
+      <Box display={group.collapsed ? "none" : "flex"} gap={0.5}>
+        {tabs.map((tab) => {
+          return (
+            <Tab
+              key={tab.id}
+              tab={tab}
+              handleClickTabMenu={handleClickTabMenu}
+              handleTabMouseEvent={handleTabMouseEvent}
+            ></Tab>
+          );
+        })}
+      </Box>
     </Flex>
   );
 }

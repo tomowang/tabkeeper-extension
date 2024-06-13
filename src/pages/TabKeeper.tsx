@@ -167,6 +167,18 @@ function TabKeeper() {
         await chrome.tabs.ungroup(ids);
         break;
       }
+      case TabGroupMenuAction.Collapse: {
+        await chrome.tabGroups.update(groupId, {
+          collapsed: true,
+        });
+        break;
+      }
+      case TabGroupMenuAction.Expand: {
+        await chrome.tabGroups.update(groupId, {
+          collapsed: false,
+        });
+        break;
+      }
     }
     await fetchData();
   }
