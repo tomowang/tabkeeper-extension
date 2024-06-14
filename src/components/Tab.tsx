@@ -1,4 +1,3 @@
-import { ElementType } from "react";
 import { ITab, TabMenuAction } from "@/types";
 import {
   Popover,
@@ -34,23 +33,30 @@ export default function Tab({
   handleTabMouseEvent,
 }: TabProps) {
   let padding = 0.5;
+  let boxSize = 5;
   let imageClassName = "";
   let boxShadowValue = "";
   if (tab.status === "unloaded") {
     imageClassName = "rounded-full border-2 border-slate-500 border-dashed";
   }
   let img = (
-    <Image src={tab.favIconUrl} w={5} h={5} className={imageClassName}></Image>
+    <Image
+      src={tab.favIconUrl}
+      w={boxSize}
+      h={boxSize}
+      className={imageClassName}
+    ></Image>
   );
   if (tab.tkFilter) {
     if (tab.tkMatched) {
       padding = 0;
+      boxSize = 6;
       boxShadowValue = `inset 0 0 0 99999px ${tab.tkColor}`;
       img = (
         <Image
           src={tab.favIconUrl}
-          w={6}
-          h={6}
+          w={boxSize}
+          h={boxSize}
           className={imageClassName}
         ></Image>
       );
@@ -58,8 +64,8 @@ export default function Tab({
       img = (
         <Image
           src={tab.favIconUrl}
-          w={5}
-          h={5}
+          w={boxSize}
+          h={boxSize}
           className={imageClassName}
           filter="auto"
           blur="1px"
@@ -76,9 +82,9 @@ export default function Tab({
           alignItems="center"
           p={padding}
           cursor="pointer"
+          minW={padding * 2 + boxSize}
           borderColor={tab.active ? "blue.600" : ""}
           boxShadow={boxShadowValue}
-          // onClick={() => handleClickTabMenu(tab.id, TabMenuAction.Activate)}
           onMouseOver={() => handleTabMouseEvent(tab)}
         >
           {img}

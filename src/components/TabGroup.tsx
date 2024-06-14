@@ -8,8 +8,8 @@ import {
   PopoverContent,
   PopoverBody,
   VStack,
-  Box,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import ActionMenuItem from "./ActionMenuItem";
 import { FaRegObjectUngroup } from "react-icons/fa";
 import {
@@ -33,14 +33,15 @@ export default function TabGroup({
   handleTabMouseEvent,
 }: TabGroupProps) {
   const gc = group.color;
+  const collapsed = group.collapsed;
   return (
     <Flex
       wrap="wrap"
       gap={0.5}
       pb={0.5}
       borderBottomColor={gc}
-      borderBottomWidth={group.collapsed ? 0 : 2}
-      pt={group.collapsed ? 0.5 : 1}
+      borderBottomWidth={collapsed ? 0 : 2}
+      pt={collapsed ? 0.5 : 1}
       alignItems="center"
     >
       <Popover trigger="click" placement="bottom-start" closeOnBlur={true}>
@@ -70,7 +71,7 @@ export default function TabGroup({
                   handleClickGroupMenu(group.id, TabGroupMenuAction.Ungroup)
                 }
               />
-              {group.collapsed ? (
+              {collapsed ? (
                 <ActionMenuItem
                   icon={TbLayoutSidebarRightCollapse}
                   title="Expand"
@@ -91,7 +92,14 @@ export default function TabGroup({
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      <Box display={group.collapsed ? "none" : "flex"} gap={0.5}>
+      <Flex
+        as={motion.div}
+        direction="row"
+        gap={0.5}
+        overflow="hidden"
+        initial={false}
+        animate={{ width: collapsed ? 0 : "auto" }}
+      >
         {tabs.map((tab) => {
           return (
             <Tab
@@ -102,7 +110,7 @@ export default function TabGroup({
             ></Tab>
           );
         })}
-      </Box>
+      </Flex>
     </Flex>
   );
 }
