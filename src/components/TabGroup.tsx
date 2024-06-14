@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverBody,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import ActionMenuItem from "./ActionMenuItem";
@@ -34,6 +35,7 @@ export default function TabGroup({
 }: TabGroupProps) {
   const gc = group.color;
   const collapsed = group.collapsed;
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex
       wrap="wrap"
@@ -44,7 +46,14 @@ export default function TabGroup({
       pt={collapsed ? 0.5 : 1}
       alignItems="center"
     >
-      <Popover trigger="click" placement="bottom-start" closeOnBlur={true}>
+      <Popover
+        trigger="click"
+        placement="bottom-start"
+        closeOnBlur={true}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      >
         <PopoverTrigger>
           <Text
             as="span"
@@ -67,25 +76,29 @@ export default function TabGroup({
               <ActionMenuItem
                 icon={FaRegObjectUngroup}
                 title="Ungroup"
-                onClick={() =>
-                  handleClickGroupMenu(group.id, TabGroupMenuAction.Ungroup)
-                }
+                onClick={() => {
+                  handleClickGroupMenu(group.id, TabGroupMenuAction.Ungroup);
+                  onClose();
+                }}
               />
               {collapsed ? (
                 <ActionMenuItem
                   icon={TbLayoutSidebarRightCollapse}
                   title="Expand"
-                  onClick={() =>
-                    handleClickGroupMenu(group.id, TabGroupMenuAction.Expand)
-                  }
+                  onClick={() => {
+                    handleClickGroupMenu(group.id, TabGroupMenuAction.Expand);
+
+                    onClose();
+                  }}
                 />
               ) : (
                 <ActionMenuItem
                   icon={TbLayoutSidebarLeftCollapse}
                   title="Collapse"
-                  onClick={() =>
-                    handleClickGroupMenu(group.id, TabGroupMenuAction.Collapse)
-                  }
+                  onClick={() => {
+                    handleClickGroupMenu(group.id, TabGroupMenuAction.Collapse);
+                    onClose();
+                  }}
                 />
               )}
             </VStack>
