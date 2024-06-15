@@ -1,3 +1,4 @@
+import { ToolbarAction } from "@/types";
 import {
   Box,
   Flex,
@@ -5,19 +6,14 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Spacer,
   Tooltip,
 } from "@chakra-ui/react";
-import { IoMdHelpBuoy, IoMdRefresh } from "react-icons/io";
-import { RiCloseLine, RiUnpinLine, RiPushpinLine } from "react-icons/ri";
-import { PiMemory } from "react-icons/pi";
-import { LiaObjectGroup, LiaObjectUngroup } from "react-icons/lia";
 import { ElementType } from "react";
-import { ToolbarAction } from "@/types";
+import { IoMdHelpBuoy, IoMdRefresh } from "react-icons/io";
+import { LiaObjectGroup, LiaObjectUngroup } from "react-icons/lia";
+import { PiMemory } from "react-icons/pi";
+import { RiCloseLine, RiPushpinLine, RiUnpinLine } from "react-icons/ri";
 
 interface ToolBarProps {
   search: string;
@@ -38,18 +34,15 @@ export default function ToolBar({
   const count = selectedTabs.length;
   return (
     <Flex direction="row" alignItems="center" gap={2}>
-      <Popover trigger="hover" placement="bottom-start">
-        <PopoverTrigger>
-          <Box>
-            <Icon as={IoMdHelpBuoy} w={6} h={6}></Icon>
-          </Box>
-        </PopoverTrigger>
-        <PopoverContent>
-          <PopoverBody>
-            Click to show menus, mouse over to show tab information.
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
+      <Tooltip
+        hasArrow
+        placement="bottom-start"
+        label="Click to show menus, mouse over to show tab information."
+      >
+        <Box>
+          <Icon as={IoMdHelpBuoy} w={6} h={6}></Icon>
+        </Box>
+      </Tooltip>
       <Box>
         <InputGroup size="sm">
           <Input
@@ -145,7 +138,7 @@ function ToolBarAction({
   onClick,
 }: ToolBarActionProps) {
   return (
-    <Tooltip label={label} isDisabled={isDisabled}>
+    <Tooltip label={label} isDisabled={isDisabled} hasArrow>
       <Box
         as="span"
         cursor={isDisabled ? "not-allowed" : "pointer"}

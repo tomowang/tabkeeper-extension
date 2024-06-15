@@ -7,6 +7,7 @@ import {
   Flex,
   VStack,
   Image,
+  PopoverArrow,
 } from "@chakra-ui/react";
 import {
   RiFocus3Line,
@@ -91,6 +92,7 @@ export default function Tab({
         </Flex>
       </PopoverTrigger>
       <PopoverContent w="auto" _focusVisible={{ outline: "none" }}>
+        <PopoverArrow />
         <PopoverBody>
           <VStack as="ul" spacing={0.5} alignItems="start">
             {!tab.active && (
