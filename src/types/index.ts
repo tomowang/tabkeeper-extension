@@ -38,3 +38,15 @@ export enum TabGroupMenuAction {
   Collapse,
   Expand,
 }
+
+export enum ToolbarAction {
+  Reload,
+  Close,
+  Unload,
+  Group,
+  Ungroup,
+  Deduplicate,
+  HighlightDuplicates,
+  Pin,
+  Unpin,
+}

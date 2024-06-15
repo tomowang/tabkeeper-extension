@@ -2,13 +2,13 @@ import { Badge, Card, CardBody, Text, Stack } from "@chakra-ui/react";
 
 interface StatusBarProps {
   search: string;
-  matchedSearch: (number | undefined)[];
+  selectedTabs: (number | undefined)[];
   tab: chrome.tabs.Tab | null;
 }
 
 export default function StatusBar({
   search,
-  matchedSearch,
+  selectedTabs,
   tab,
 }: StatusBarProps) {
   // https://developer.chrome.com/docs/extensions/reference/api/tabs#type-TabStatus
@@ -25,7 +25,7 @@ export default function StatusBar({
           {search && (
             <Text className="truncate">
               <Badge variant="outline" colorScheme="yellow">
-                {matchedSearch.length}
+                {selectedTabs.length}
               </Badge>{" "}
               tabs matched search term
             </Text>

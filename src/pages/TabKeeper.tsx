@@ -6,6 +6,7 @@ import {
   TabGroupMenuAction,
   TabGroups,
   TabMenuAction,
+  ToolbarAction,
 } from "@/types";
 import { Box, Flex, Spacer } from "@chakra-ui/react";
 import ToolBar from "@/components/ToolBar";
@@ -16,9 +17,7 @@ function TabKeeper() {
   const [groups, setGroups] = useState<TabGroups>({});
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab | null>(null);
   const [search, setSearch] = useState<string>("");
-  const [matchedSearch, setMatchedSearch] = useState<(number | undefined)[]>(
-    []
-  );
+  const [selectedTabs, setSelectedTabs] = useState<(number | undefined)[]>([]);
   const fetchData = useCallback(
     async function () {
       const groups: TabGroups = {};
@@ -30,7 +29,7 @@ function TabKeeper() {
       tabGroups.forEach((group) => {
         groups[group.id] = group;
       });
-      const matchedSearch: (number | undefined)[] = [];
+      const selectedTabs: (number | undefined)[] = [];
       const ws = wins.map((win) => {
         win.tabs?.forEach((tab) => {
           // TODO: use rules to apply favIconUrl and support Edge URLs
@@ -67,7 +66,7 @@ function TabKeeper() {
               const url = tab.url?.toLowerCase();
               if (title?.match(regex) ?? url?.match(regex)) {
                 t.tkMatched = true;
-                matchedSearch.push(tab.id);
+                selectedTabs.push(tab.id);
               }
             }
             return t;
@@ -77,7 +76,7 @@ function TabKeeper() {
       });
       setWins(ws);
       setGroups(groups);
-      setMatchedSearch(matchedSearch);
+      setSelectedTabs(selectedTabs);
     },
     [search]
   );
@@ -95,9 +94,7 @@ function TabKeeper() {
     }
     switch (action) {
       case TabMenuAction.Activate:
-        await chrome.tabs.update(tabId, {
-          active: true,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { active: true });
         break;
       case TabMenuAction.Reload:
         await chrome.tabs.reload(tabId);
@@ -109,37 +106,25 @@ function TabKeeper() {
         await chrome.tabs.duplicate(tabId);
         break;
       case TabMenuAction.Highlight:
-        await chrome.tabs.update(tabId, {
-          highlighted: true,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { highlighted: true });
         break;
       case TabMenuAction.Unhighlight:
-        await chrome.tabs.update(tabId, {
-          highlighted: false,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { highlighted: false });
         break;
       case TabMenuAction.Pin:
-        await chrome.tabs.update(tabId, {
-          pinned: true,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { pinned: true });
         break;
       case TabMenuAction.Unpin:
-        await chrome.tabs.update(tabId, {
-          pinned: false,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { pinned: false });
         break;
       case TabMenuAction.Unload:
         await chrome.tabs.discard(tabId);
         break;
       case TabMenuAction.Mute:
-        await chrome.tabs.update(tabId, {
-          muted: true,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { muted: true });
         break;
       case TabMenuAction.Unmute:
-        await chrome.tabs.update(tabId, {
-          muted: false,
-        } as chrome.tabs.UpdateProperties);
+        await chrome.tabs.update(tabId, { muted: false });
         break;
     }
     await fetchData();
@@ -183,13 +168,75 @@ function TabKeeper() {
     await fetchData();
   }
 
+  async function handleToolbarAction(
+    tabIds: (number | undefined)[],
+    action: ToolbarAction
+  ) {
+    if (tabIds.length === 0) {
+      return;
+    }
+    const ids = tabIds.flatMap((t) => (t !== undefined ? [t] : []));
+    switch (action) {
+      case ToolbarAction.Close:
+        await chrome.tabs.remove(ids);
+        break;
+      case ToolbarAction.Reload:
+        await Promise.all(
+          ids.map(async (id) => {
+            await chrome.tabs.reload(id);
+          })
+        );
+        break;
+      case ToolbarAction.Unload:
+        await Promise.all(
+          ids.map(async (id) => {
+            await chrome.tabs.discard(id);
+          })
+        );
+        break;
+      case ToolbarAction.Group:
+        await chrome.tabs.group({ tabIds: ids });
+        break;
+      case ToolbarAction.Ungroup:
+        await chrome.tabs.ungroup(ids);
+        break;
+      case ToolbarAction.Pin:
+        await Promise.all(
+          ids.map(async (id) => {
+            await chrome.tabs.update(id, { pinned: true });
+          })
+        );
+        break;
+      case ToolbarAction.Unpin:
+        await Promise.all(
+          ids.map(async (id) => {
+            await chrome.tabs.update(id, { pinned: false });
+          })
+        );
+        break;
+    }
+    await fetchData();
+  }
+
   function handleTabMouseEvent(tab: chrome.tabs.Tab | null) {
     setViewTab(tab);
   }
 
   return (
     <Flex direction="column" h="full" gap={2}>
-      <ToolBar search={search} setSearch={setSearch}></ToolBar>
+      <ToolBar
+        search={search}
+        setSearch={setSearch}
+        selectedTabs={selectedTabs}
+        handleToolbarAction={(
+          tabIds: (number | undefined)[],
+          action: ToolbarAction
+        ) =>
+          void (async () => {
+            await handleToolbarAction(tabIds, action);
+          })()
+        }
+      ></ToolBar>
       <Flex wrap="wrap" mx="auto" gap={2}>
         {wins.map((win, index) => {
           // win.id may be undefined, use index for key
@@ -221,11 +268,7 @@ function TabKeeper() {
       </Flex>
       <Spacer />
       <Box>
-        <StatusBar
-          search={search}
-          matchedSearch={matchedSearch}
-          tab={viewTab}
-        />
+        <StatusBar search={search} selectedTabs={selectedTabs} tab={viewTab} />
       </Box>
     </Flex>
   );

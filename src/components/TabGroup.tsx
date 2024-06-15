@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import ActionMenuItem from "./ActionMenuItem";
-import { FaRegObjectUngroup } from "react-icons/fa";
+import { LiaObjectUngroup } from "react-icons/lia";
 import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
@@ -74,7 +74,7 @@ export default function TabGroup({
           <PopoverBody>
             <VStack as="ul" spacing={0.5} alignItems="start">
               <ActionMenuItem
-                icon={FaRegObjectUngroup}
+                icon={LiaObjectUngroup}
                 title="Ungroup"
                 onClick={() => {
                   handleClickGroupMenu(group.id, TabGroupMenuAction.Ungroup);
