@@ -10,15 +10,15 @@ import { menus } from "./utils/const";
 
 const theme = extendTheme({
   colors: {
-    grey: "#5E6468",
-    blue: "#1B74E8",
-    red: "#D73226",
-    yellow: "#F8AC02",
-    green: "#188139",
-    pink: "#D01A85",
-    purple: "#A143F4",
-    cyan: "#027C84",
-    orange: "#F8913F",
+    g_grey: "#5E6468",
+    g_blue: "#1B74E8",
+    g_red: "#D73226",
+    g_yellow: "#F8AC02",
+    g_green: "#188139",
+    g_pink: "#D01A85",
+    g_purple: "#A143F4",
+    g_cyan: "#027C84",
+    g_orange: "#F8913F",
   },
 });
 

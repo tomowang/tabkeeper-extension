@@ -33,7 +33,7 @@ export default function TabGroup({
   handleClickGroupMenu,
   handleTabMouseEvent,
 }: TabGroupProps) {
-  const gc = group.color;
+  const gc = `g_${group.color}`;
   const collapsed = group.collapsed;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -65,7 +65,7 @@ export default function TabGroup({
             minW={5}
             h={5}
             lineHeight={5}
-            color={gc === "yellow" || gc === "orange" ? "black" : "white"}
+            color={gc === "g_yellow" || gc === "g_orange" ? "black" : "white"}
           >
             {group.title}
           </Text>
