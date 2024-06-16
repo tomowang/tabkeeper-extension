@@ -272,7 +272,10 @@ function TabKeeper() {
     <Flex direction="column" h="full" gap={2}>
       <ToolBar
         search={search}
-        setSearch={setSearch}
+        handleSearch={(search: string) => {
+          setSearch(search);
+          setShowDuplications(false);
+        }}
         selectedTabs={selectedTabs}
         showDuplications={showDuplications}
         duplicationInfo={duplicationInfo}

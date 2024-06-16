@@ -22,7 +22,7 @@ import {
 
 interface ToolBarProps {
   search: string;
-  setSearch: (search: string) => void;
+  handleSearch: (search: string) => void;
   selectedTabs: (number | undefined)[];
   showDuplications: boolean;
   duplicationInfo: DuplicationInfo;
@@ -34,7 +34,7 @@ interface ToolBarProps {
 
 export default function ToolBar({
   search,
-  setSearch,
+  handleSearch,
   selectedTabs,
   showDuplications,
   duplicationInfo,
@@ -55,9 +55,9 @@ export default function ToolBar({
       <Box>
         <InputGroup size="sm">
           <Input
-            placeholder="Search"
+            placeholder="Search title or URL"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
           ></Input>
           <InputRightElement>
             {search && (
@@ -66,7 +66,7 @@ export default function ToolBar({
                 w={6}
                 h={6}
                 cursor="pointer"
-                onClick={() => setSearch("")}
+                onClick={() => handleSearch("")}
               ></Icon>
             )}
           </InputRightElement>
