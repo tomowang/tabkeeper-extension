@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Window from "@/components/Window";
 import {
+  DuplicationInfo,
   ITab,
   IWindow,
   TabGroupMenuAction,
@@ -11,6 +12,8 @@ import {
 import { Box, Flex, Spacer } from "@chakra-ui/react";
 import ToolBar from "@/components/ToolBar";
 import StatusBar from "@/components/StatusBar";
+import { defaultdict } from "@/utils";
+import { colorPalette } from "@/utils/const";
 
 function TabKeeper() {
   const [wins, setWins] = useState<IWindow[]>([]);
@@ -18,6 +21,11 @@ function TabKeeper() {
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab | null>(null);
   const [search, setSearch] = useState<string>("");
   const [selectedTabs, setSelectedTabs] = useState<(number | undefined)[]>([]);
+  const [showDuplications, setShowDuplications] = useState<boolean>(false);
+  const [duplicationInfo, setDuplicationInfo] = useState<DuplicationInfo>({
+    count: 0,
+    totalCount: 0,
+  });
   const fetchData = useCallback(
     async function () {
       const groups: TabGroups = {};
@@ -30,6 +38,27 @@ function TabKeeper() {
         groups[group.id] = group;
       });
       const selectedTabs: (number | undefined)[] = [];
+      const tabUrlIDMapping = defaultdict(Array<number | undefined>);
+      const tabUrlColorMapping = {} as Record<string, string>;
+      wins.forEach((win) => {
+        win.tabs?.forEach((tab) => {
+          if (tab.url) tabUrlIDMapping[tab.url].push(tab.id);
+        });
+      });
+      let duplicateCount = 0;
+      let duplicateTotalCount = 0;
+      for (const url in tabUrlIDMapping) {
+        if (tabUrlIDMapping[url].length > 1) {
+          const color = colorPalette[duplicateCount % colorPalette.length];
+          duplicateCount += 1;
+          duplicateTotalCount += tabUrlIDMapping[url].length;
+          tabUrlColorMapping[url] = color;
+        }
+      }
+      setDuplicationInfo({
+        count: duplicateCount,
+        totalCount: duplicateTotalCount,
+      });
       const ws = wins.map((win) => {
         win.tabs?.forEach((tab) => {
           // TODO: use rules to apply favIconUrl and support Edge URLs
@@ -55,18 +84,25 @@ function TabKeeper() {
             const t: ITab = {
               ...tab,
               ...{
-                tkFilter: !!search,
+                tkFilter: false,
                 tkMatched: false,
                 tkColor: "yellow",
               },
             };
             if (search) {
+              t.tkFilter = true;
               const regex = new RegExp(search, "i");
               const title = tab.title?.toLowerCase();
               const url = tab.url?.toLowerCase();
               if (title?.match(regex) ?? url?.match(regex)) {
                 t.tkMatched = true;
                 selectedTabs.push(tab.id);
+              }
+            } else if (showDuplications) {
+              t.tkFilter = true;
+              if (tab.url && tabUrlColorMapping[tab.url]) {
+                t.tkMatched = true;
+                t.tkColor = tabUrlColorMapping[tab.url];
               }
             }
             return t;
@@ -78,7 +114,7 @@ function TabKeeper() {
       setGroups(groups);
       setSelectedTabs(selectedTabs);
     },
-    [search]
+    [search, showDuplications]
   );
   useEffect(() => {
     fetchData().catch(console.error);
@@ -172,7 +208,11 @@ function TabKeeper() {
     tabIds: (number | undefined)[],
     action: ToolbarAction
   ) {
-    if (tabIds.length === 0) {
+    if (
+      tabIds.length === 0 &&
+      action !== ToolbarAction.HighlightDuplicates &&
+      action !== ToolbarAction.Deduplicate
+    ) {
       return;
     }
     const ids = tabIds.flatMap((t) => (t !== undefined ? [t] : []));
@@ -214,6 +254,12 @@ function TabKeeper() {
           })
         );
         break;
+      case ToolbarAction.HighlightDuplicates:
+        setShowDuplications((prev) => !prev);
+        setSearch("");
+        break;
+      case ToolbarAction.Deduplicate:
+        break;
     }
     await fetchData();
   }
@@ -228,6 +274,8 @@ function TabKeeper() {
         search={search}
         setSearch={setSearch}
         selectedTabs={selectedTabs}
+        showDuplications={showDuplications}
+        duplicationInfo={duplicationInfo}
         handleToolbarAction={(
           tabIds: (number | undefined)[],
           action: ToolbarAction
@@ -268,7 +316,12 @@ function TabKeeper() {
       </Flex>
       <Spacer />
       <Box>
-        <StatusBar search={search} selectedTabs={selectedTabs} tab={viewTab} />
+        <StatusBar
+          search={search}
+          selectedTabs={selectedTabs}
+          duplicationInfo={duplicationInfo}
+          tab={viewTab}
+        />
       </Box>
     </Flex>
   );

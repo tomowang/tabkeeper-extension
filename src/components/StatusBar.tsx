@@ -1,14 +1,17 @@
+import { DuplicationInfo } from "@/types";
 import { Badge, Card, CardBody, Text, Stack } from "@chakra-ui/react";
 
 interface StatusBarProps {
   search: string;
   selectedTabs: (number | undefined)[];
+  duplicationInfo: DuplicationInfo;
   tab: chrome.tabs.Tab | null;
 }
 
 export default function StatusBar({
   search,
   selectedTabs,
+  duplicationInfo,
   tab,
 }: StatusBarProps) {
   // https://developer.chrome.com/docs/extensions/reference/api/tabs#type-TabStatus
@@ -26,8 +29,20 @@ export default function StatusBar({
             <Text className="truncate">
               <Badge variant="outline" colorScheme="yellow">
                 {selectedTabs.length}
-              </Badge>{" "}
-              tabs matched search term
+              </Badge>
+              {" tabs matched search term"}
+            </Text>
+          )}
+          {duplicationInfo.count > 0 && (
+            <Text className="truncate">
+              <Badge variant="outline" colorScheme="yellow">
+                {duplicationInfo.totalCount}
+              </Badge>
+              {" tabs duplicate of "}
+              <Badge variant="outline" colorScheme="yellow">
+                {duplicationInfo.count}
+              </Badge>
+              {" groups"}
             </Text>
           )}
           {tab && (

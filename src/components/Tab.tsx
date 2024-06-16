@@ -33,8 +33,8 @@ export default function Tab({
   handleClickTabMenu,
   handleTabMouseEvent,
 }: TabProps) {
-  let padding = 0.5;
-  let boxSize = 5;
+  let padding = 1;
+  let boxSize = 4;
   let imageClassName = "";
   let boxShadowValue = "";
   if (tab.status === "unloaded") {
@@ -50,8 +50,8 @@ export default function Tab({
   );
   if (tab.tkFilter) {
     if (tab.tkMatched) {
-      padding = 0;
-      boxSize = 6;
+      padding = 0.5;
+      boxSize = 5;
       boxShadowValue = `inset 0 0 0 99999px ${tab.tkColor}`;
       img = (
         <Image
@@ -69,7 +69,7 @@ export default function Tab({
           h={boxSize}
           className={imageClassName}
           filter="auto"
-          blur="1px"
+          blur="2px"
         ></Image>
       );
     }

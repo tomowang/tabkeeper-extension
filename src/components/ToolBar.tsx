@@ -1,6 +1,7 @@
-import { ToolbarAction } from "@/types";
+import { DuplicationInfo, ToolbarAction } from "@/types";
 import {
   Box,
+  Divider,
   Flex,
   Icon,
   Input,
@@ -14,11 +15,17 @@ import { IoMdHelpBuoy, IoMdRefresh } from "react-icons/io";
 import { LiaObjectGroup, LiaObjectUngroup } from "react-icons/lia";
 import { PiMemory } from "react-icons/pi";
 import { RiCloseLine, RiPushpinLine, RiUnpinLine } from "react-icons/ri";
+import {
+  TbTriangleSquareCircle,
+  TbTriangleSquareCircleFilled,
+} from "react-icons/tb";
 
 interface ToolBarProps {
   search: string;
   setSearch: (search: string) => void;
   selectedTabs: (number | undefined)[];
+  showDuplications: boolean;
+  duplicationInfo: DuplicationInfo;
   handleToolbarAction: (
     tabIds: (number | undefined)[],
     action: ToolbarAction
@@ -29,6 +36,8 @@ export default function ToolBar({
   search,
   setSearch,
   selectedTabs,
+  showDuplications,
+  duplicationInfo,
   handleToolbarAction,
 }: ToolBarProps) {
   const count = selectedTabs.length;
@@ -64,6 +73,26 @@ export default function ToolBar({
         </InputGroup>
       </Box>
       <Spacer />
+      <ToolBarAction
+        label="Taggle highlight duplicated tabs"
+        icon={TbTriangleSquareCircleFilled}
+        isDisabled={duplicationInfo.count === 0}
+        isChecked={showDuplications}
+        onClick={() => {
+          handleToolbarAction([], ToolbarAction.HighlightDuplicates);
+        }}
+      ></ToolBarAction>
+      <Divider orientation="vertical" />
+      <ToolBarAction
+        label={`Deduplicate ${
+          duplicationInfo.totalCount - duplicationInfo.count
+        } tabs`}
+        icon={TbTriangleSquareCircle}
+        isDisabled={duplicationInfo.count === 0}
+        onClick={() => {
+          handleToolbarAction([], ToolbarAction.Deduplicate);
+        }}
+      ></ToolBarAction>
       <ToolBarAction
         label={`Group ${count} tabs`}
         icon={RiPushpinLine}
@@ -128,6 +157,7 @@ interface ToolBarActionProps {
   label: string;
   icon: ElementType;
   isDisabled: boolean;
+  isChecked?: boolean;
   onClick: () => void;
 }
 
@@ -135,6 +165,7 @@ function ToolBarAction({
   label,
   icon,
   isDisabled,
+  isChecked,
   onClick,
 }: ToolBarActionProps) {
   return (
@@ -145,7 +176,7 @@ function ToolBarAction({
         color={isDisabled ? "gray.500" : "gray.700"}
         onClick={onClick}
       >
-        <Icon as={icon} w={6} h={6}></Icon>
+        <Icon as={icon} w={6} h={6} color={isChecked ? "blue.500" : ""}></Icon>
       </Box>
     </Tooltip>
   );
