@@ -174,7 +174,9 @@ function ToolBarAction({
         as="span"
         cursor={isDisabled ? "not-allowed" : "pointer"}
         color={isDisabled ? "gray.500" : "gray.700"}
-        onClick={onClick}
+        onClick={() => {
+          !isDisabled && onClick();
+        }}
       >
         <Icon as={icon} w={6} h={6} color={isChecked ? "blue.500" : ""}></Icon>
       </Box>
