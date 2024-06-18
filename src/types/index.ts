@@ -5,6 +5,7 @@ export type TabGroups = Record<number, chrome.tabGroups.TabGroup>;
 export interface DuplicationInfo {
   count: number;
   totalCount: number;
+  tabUrlIDMapping: Record<string, number[]>;
 }
 
 export interface IWindow extends chrome.windows.Window {

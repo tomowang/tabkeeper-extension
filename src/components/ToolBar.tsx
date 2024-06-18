@@ -41,6 +41,14 @@ export default function ToolBar({
   handleToolbarAction,
 }: ToolBarProps) {
   const count = selectedTabs.length;
+
+  let duplicatedIds: number[] = [];
+  for (const url in duplicationInfo.tabUrlIDMapping) {
+    const tabIds = duplicationInfo.tabUrlIDMapping[url];
+    if (tabIds.length > 1) {
+      duplicatedIds = duplicatedIds.concat(tabIds.slice(1));
+    }
+  }
   return (
     <Flex direction="row" alignItems="center" gap={2}>
       <Tooltip
@@ -90,7 +98,7 @@ export default function ToolBar({
         icon={TbTriangleSquareCircle}
         isDisabled={duplicationInfo.count === 0}
         onClick={() => {
-          handleToolbarAction([], ToolbarAction.Deduplicate);
+          handleToolbarAction(duplicatedIds, ToolbarAction.Deduplicate);
         }}
       ></ToolBarAction>
       <ToolBarAction

@@ -25,6 +25,7 @@ function TabKeeper() {
   const [duplicationInfo, setDuplicationInfo] = useState<DuplicationInfo>({
     count: 0,
     totalCount: 0,
+    tabUrlIDMapping: {},
   });
   const fetchData = useCallback(
     async function () {
@@ -38,11 +39,11 @@ function TabKeeper() {
         groups[group.id] = group;
       });
       const selectedTabs: (number | undefined)[] = [];
-      const tabUrlIDMapping = defaultdict(Array<number | undefined>);
+      const tabUrlIDMapping = defaultdict(Array<number>);
       const tabUrlColorMapping = {} as Record<string, string>;
       wins.forEach((win) => {
         win.tabs?.forEach((tab) => {
-          if (tab.url) tabUrlIDMapping[tab.url].push(tab.id);
+          if (tab.url && tab.id) tabUrlIDMapping[tab.url].push(tab.id);
         });
       });
       let duplicateCount = 0;
@@ -58,6 +59,7 @@ function TabKeeper() {
       setDuplicationInfo({
         count: duplicateCount,
         totalCount: duplicateTotalCount,
+        tabUrlIDMapping: tabUrlIDMapping,
       });
       const ws = wins.map((win) => {
         win.tabs?.forEach((tab) => {
@@ -208,11 +210,7 @@ function TabKeeper() {
     tabIds: (number | undefined)[],
     action: ToolbarAction
   ) {
-    if (
-      tabIds.length === 0 &&
-      action !== ToolbarAction.HighlightDuplicates &&
-      action !== ToolbarAction.Deduplicate
-    ) {
+    if (tabIds.length === 0 && action !== ToolbarAction.HighlightDuplicates) {
       return;
     }
     const ids = tabIds.flatMap((t) => (t !== undefined ? [t] : []));
@@ -259,6 +257,7 @@ function TabKeeper() {
         setSearch("");
         break;
       case ToolbarAction.Deduplicate:
+        await chrome.tabs.remove(ids);
         break;
     }
     await fetchData();
