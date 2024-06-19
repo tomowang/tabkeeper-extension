@@ -41,9 +41,10 @@ export enum TabMenuAction {
 
 export enum TabGroupMenuAction {
   Ungroup,
-  Collapse,
-  Expand,
+  Update,
 }
+
+export interface TabGroupActionOptions {}
 
 export enum ToolbarAction {
   Reload,

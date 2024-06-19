@@ -177,7 +177,8 @@ function TabKeeper() {
 
   async function handleClickGroupMenu(
     groupId: number,
-    action: TabGroupMenuAction
+    action: TabGroupMenuAction,
+    updateProperties?: chrome.tabGroups.UpdateProperties
   ) {
     switch (action) {
       case TabGroupMenuAction.Ungroup: {
@@ -190,16 +191,9 @@ function TabKeeper() {
         await chrome.tabs.ungroup(ids);
         break;
       }
-      case TabGroupMenuAction.Collapse: {
-        await chrome.tabGroups.update(groupId, {
-          collapsed: true,
-        });
-        break;
-      }
-      case TabGroupMenuAction.Expand: {
-        await chrome.tabGroups.update(groupId, {
-          collapsed: false,
-        });
+      case TabGroupMenuAction.Update: {
+        if (!updateProperties) return;
+        await chrome.tabGroups.update(groupId, updateProperties);
         break;
       }
     }
@@ -297,8 +291,9 @@ function TabKeeper() {
               ) => void handleClickTabMenu(tabId, action)}
               handleClickGroupMenu={(
                 groupId: number,
-                action: TabGroupMenuAction
-              ) => void handleClickGroupMenu(groupId, action)}
+                action: TabGroupMenuAction,
+                updateProperties?: chrome.tabGroups.UpdateProperties
+              ) => void handleClickGroupMenu(groupId, action, updateProperties)}
               handleTabMouseEvent={handleTabMouseEvent}
             />
           );

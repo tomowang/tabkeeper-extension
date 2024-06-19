@@ -15,7 +15,11 @@ interface WindowProps {
   win: IWindow;
   groups: TabGroups;
   handleClickTabMenu: (id: number | undefined, action: TabMenuAction) => void;
-  handleClickGroupMenu: (id: number, action: TabGroupMenuAction) => void;
+  handleClickGroupMenu: (
+    id: number,
+    action: TabGroupMenuAction,
+    updateProperties?: chrome.tabGroups.UpdateProperties
+  ) => void;
   handleTabMouseEvent: (tab: chrome.tabs.Tab | null) => void;
 }
 

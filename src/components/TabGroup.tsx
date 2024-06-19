@@ -18,12 +18,17 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
 } from "react-icons/tb";
+import ColorChoice from "./ColorChoice";
 
 interface TabGroupProps {
   tabs: ITab[];
   group: chrome.tabGroups.TabGroup;
   handleClickTabMenu: (id: number | undefined, action: TabMenuAction) => void;
-  handleClickGroupMenu: (id: number, action: TabGroupMenuAction) => void;
+  handleClickGroupMenu: (
+    id: number,
+    action: TabGroupMenuAction,
+    updateProperties?: chrome.tabGroups.UpdateProperties
+  ) => void;
   handleTabMouseEvent: (tab: chrome.tabs.Tab | null) => void;
 }
 
@@ -74,6 +79,18 @@ export default function TabGroup({
         <PopoverContent w="auto" _focusVisible={{ outline: "none" }}>
           <PopoverArrow />
           <PopoverBody>
+            <VStack spacing={0.5} alignItems="start">
+              <ColorChoice
+                selectedColor={group.color}
+                onColorChange={function (
+                  color: chrome.tabGroups.ColorEnum
+                ): void {
+                  handleClickGroupMenu(group.id, TabGroupMenuAction.Update, {
+                    color,
+                  });
+                }}
+              />
+            </VStack>
             <VStack as="ul" spacing={0.5} alignItems="start">
               <ActionMenuItem
                 icon={LiaObjectUngroup}
@@ -88,7 +105,9 @@ export default function TabGroup({
                   icon={TbLayoutSidebarRightCollapse}
                   title="Expand"
                   onClick={() => {
-                    handleClickGroupMenu(group.id, TabGroupMenuAction.Expand);
+                    handleClickGroupMenu(group.id, TabGroupMenuAction.Update, {
+                      collapsed: false,
+                    });
                     onClose();
                   }}
                 />
@@ -97,7 +116,9 @@ export default function TabGroup({
                   icon={TbLayoutSidebarLeftCollapse}
                   title="Collapse"
                   onClick={() => {
-                    handleClickGroupMenu(group.id, TabGroupMenuAction.Collapse);
+                    handleClickGroupMenu(group.id, TabGroupMenuAction.Update, {
+                      collapsed: true,
+                    });
                     onClose();
                   }}
                 />
