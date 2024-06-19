@@ -89,7 +89,6 @@ export default function TabGroup({
                   title="Expand"
                   onClick={() => {
                     handleClickGroupMenu(group.id, TabGroupMenuAction.Expand);
-
                     onClose();
                   }}
                 />

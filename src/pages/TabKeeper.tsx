@@ -281,11 +281,7 @@ function TabKeeper() {
         handleToolbarAction={(
           tabIds: (number | undefined)[],
           action: ToolbarAction
-        ) =>
-          void (async () => {
-            await handleToolbarAction(tabIds, action);
-          })()
-        }
+        ) => void handleToolbarAction(tabIds, action)}
       ></ToolBar>
       <Flex wrap="wrap" mx="auto" gap={2}>
         {wins.map((win, index) => {
@@ -298,19 +294,11 @@ function TabKeeper() {
               handleClickTabMenu={(
                 tabId: number | undefined,
                 action: TabMenuAction
-              ) =>
-                void (async () => {
-                  await handleClickTabMenu(tabId, action);
-                })()
-              }
+              ) => void handleClickTabMenu(tabId, action)}
               handleClickGroupMenu={(
                 groupId: number,
                 action: TabGroupMenuAction
-              ) =>
-                void (async () => {
-                  await handleClickGroupMenu(groupId, action);
-                })()
-              }
+              ) => void handleClickGroupMenu(groupId, action)}
               handleTabMouseEvent={handleTabMouseEvent}
             />
           );

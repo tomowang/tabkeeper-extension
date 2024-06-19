@@ -9,8 +9,7 @@ import Tab from "./Tab";
 import TabGroup from "./TabGroup";
 
 // https://developer.chrome.com/docs/extensions/reference/tabGroups/#property-TAB_GROUP_ID_NONE
-// chrome.tabGroups.TAB_GROUP_ID_NONE
-const TAB_GROUP_ID_NONE = -1;
+const TAB_GROUP_ID_NONE = chrome.tabGroups.TAB_GROUP_ID_NONE;
 
 interface WindowProps {
   win: IWindow;
