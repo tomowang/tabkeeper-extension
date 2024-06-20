@@ -10,6 +10,8 @@ import {
   VStack,
   useDisclosure,
   PopoverArrow,
+  Input,
+  Divider,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import ActionMenuItem from "./ActionMenuItem";
@@ -79,7 +81,21 @@ export default function TabGroup({
         <PopoverContent w="auto" _focusVisible={{ outline: "none" }}>
           <PopoverArrow />
           <PopoverBody>
-            <VStack spacing={0.5} alignItems="start">
+            <VStack spacing={1.5} alignItems="start">
+              <Input
+                size="sm"
+                variant="outline"
+                borderRadius="md"
+                value={group.title}
+                placeholder="Name This Group"
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  console.log(new RegExp(e.target.value).test("abc"));
+                  handleClickGroupMenu(group.id, TabGroupMenuAction.Update, {
+                    title: e.target.value,
+                  });
+                }}
+              ></Input>
               <ColorChoice
                 selectedColor={group.color}
                 onColorChange={function (
@@ -91,6 +107,7 @@ export default function TabGroup({
                 }}
               />
             </VStack>
+            <Divider colorScheme="blue" size="md" my={2} />
             <VStack as="ul" spacing={0.5} alignItems="start">
               <ActionMenuItem
                 icon={LiaObjectUngroup}

@@ -63,6 +63,7 @@ export default function ToolBar({
       <Box>
         <InputGroup size="sm">
           <Input
+            borderRadius="md"
             placeholder="Search title or URL"
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
