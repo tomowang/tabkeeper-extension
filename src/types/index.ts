@@ -44,8 +44,6 @@ export enum TabGroupMenuAction {
   Update,
 }
 
-export interface TabGroupActionOptions {}
-
 export enum ToolbarAction {
   Reload,
   Close,
