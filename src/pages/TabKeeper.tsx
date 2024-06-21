@@ -252,6 +252,7 @@ function TabKeeper() {
         break;
       case ToolbarAction.Deduplicate:
         await chrome.tabs.remove(ids);
+        setShowDuplications(false);
         break;
     }
     await fetchData();
