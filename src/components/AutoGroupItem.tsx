@@ -1,4 +1,4 @@
-import { IAutoGroupItem } from "@/types";
+import { IAutoGroupRule } from "@/types";
 import {
   Box,
   Card,
@@ -14,8 +14,8 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import ColorChoice from "./ColorChoice";
 
 interface AutoGroupItemProps {
-  item: IAutoGroupItem;
-  handleUpdate: (item: IAutoGroupItem) => void;
+  item: IAutoGroupRule;
+  handleUpdate: (item: IAutoGroupRule) => void;
   handleDelete: () => void;
 }
 

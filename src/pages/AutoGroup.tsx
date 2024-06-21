@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AutoGroupItem from "@/components/AutoGroupItem";
-import { IAutoGroupItem } from "@/types";
+import { IAutoGroupRule } from "@/types";
 import { Box, Button, Flex, Heading, useToast } from "@chakra-ui/react";
 import { tabGroupColors } from "@/utils/const";
 import { FaSave, FaRegPlusSquare } from "react-icons/fa";
@@ -8,26 +8,26 @@ import { MdOutlineCancel } from "react-icons/md";
 
 export default function AutoGroup() {
   const toast = useToast();
-  const [items, setItems] = useState<IAutoGroupItem[]>([]);
-  const [newItem, setNewItem] = useState<IAutoGroupItem | null>(null);
+  const [items, setItems] = useState<IAutoGroupRule[]>([]);
+  const [newItem, setNewItem] = useState<IAutoGroupRule | null>(null);
   useEffect(() => {
-    chrome.storage.local.get("autoGroup", (result) => {
-      if (result.autoGroup) {
-        setItems(result.autoGroup as IAutoGroupItem[]);
+    chrome.storage.local.get("autoGroupRules", ({ autoGroupRules }) => {
+      if (autoGroupRules) {
+        setItems(autoGroupRules as IAutoGroupRule[]);
       }
     });
   }, []);
-  function handleUpdate(index: number, item: IAutoGroupItem) {
+  function handleUpdate(index: number, item: IAutoGroupRule) {
     const newItems = [...items];
     newItems[index] = item;
-    chrome.storage.local.set({ autoGroup: newItems }, () => {
+    chrome.storage.local.set({ autoGroupRules: newItems }, () => {
       setItems(newItems);
     });
   }
   function handleDeleteItem(index: number) {
     const newItems = [...items];
     newItems.splice(index, 1);
-    chrome.storage.local.set({ autoGroup: newItems }, () => {
+    chrome.storage.local.set({ autoGroupRules: newItems }, () => {
       setItems(newItems);
       toast({
         title: "Auto Group rule deleted",
@@ -39,7 +39,7 @@ export default function AutoGroup() {
     });
   }
   function handleAdd() {
-    const item: IAutoGroupItem = {
+    const item: IAutoGroupRule = {
       title: "",
       color: tabGroupColors[items.length % tabGroupColors.length],
       mode: "wildcard",
@@ -70,7 +70,7 @@ export default function AutoGroup() {
       return;
     }
     const newItems = [...items, newItem];
-    chrome.storage.local.set({ autoGroup: newItems }, () => {
+    chrome.storage.local.set({ autoGroupRules: newItems }, () => {
       setItems(newItems);
       setNewItem(null);
       toast({
@@ -82,7 +82,7 @@ export default function AutoGroup() {
       });
     });
   }
-  function handelUpdateNewItem(item: IAutoGroupItem) {
+  function handelUpdateNewItem(item: IAutoGroupRule) {
     setNewItem(item);
   }
   return (
@@ -96,7 +96,7 @@ export default function AutoGroup() {
             <Box mt={2} key={index}>
               <AutoGroupItem
                 item={item}
-                handleUpdate={(item: IAutoGroupItem) => {
+                handleUpdate={(item: IAutoGroupRule) => {
                   handleUpdate(index, item);
                 }}
                 handleDelete={() => {
@@ -111,7 +111,7 @@ export default function AutoGroup() {
         <Box mt={2}>
           <AutoGroupItem
             item={newItem}
-            handleUpdate={(item: IAutoGroupItem) => {
+            handleUpdate={(item: IAutoGroupRule) => {
               handelUpdateNewItem(item);
             }}
             handleDelete={() => {

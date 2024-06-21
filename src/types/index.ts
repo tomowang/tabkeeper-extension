@@ -56,7 +56,7 @@ export enum ToolbarAction {
   Unpin,
 }
 
-export interface IAutoGroupItem {
+export interface IAutoGroupRule {
   title: string;
   color: chrome.tabGroups.ColorEnum;
   mode: "wildcard" | "regex";
