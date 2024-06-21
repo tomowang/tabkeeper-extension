@@ -56,6 +56,7 @@ export default function AutoGroupItem({
                 aria-label={"Delete"}
                 icon={<FaRegTrashCan />}
                 onClick={handleDelete}
+                tabIndex={-1}
               ></IconButton>
             </Box>
           </HStack>

@@ -121,24 +121,28 @@ export default function AutoGroup() {
         </Box>
       )}
       <Flex direction="row" justifyContent="flex-end" gap={2} mt={2}>
-        <Button
-          size="sm"
-          colorScheme="blue"
-          isDisabled={newItem !== null}
-          leftIcon={<FaRegPlusSquare />}
-          onClick={handleAdd}
-        >
-          Add
-        </Button>
-        <Button
-          size="sm"
-          colorScheme="blue"
-          isDisabled={newItem === null}
-          leftIcon={<FaSave />}
-          onClick={handleSave}
-        >
-          Save
-        </Button>
+        {newItem === null && (
+          <Button
+            size="sm"
+            colorScheme="blue"
+            isDisabled={newItem !== null}
+            leftIcon={<FaRegPlusSquare />}
+            onClick={handleAdd}
+          >
+            Add
+          </Button>
+        )}
+        {newItem !== null && (
+          <Button
+            size="sm"
+            colorScheme="blue"
+            isDisabled={newItem === null}
+            leftIcon={<FaSave />}
+            onClick={handleSave}
+          >
+            Save
+          </Button>
+        )}
         <Button
           size="sm"
           variant="outline"
