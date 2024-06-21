@@ -14,7 +14,7 @@ export default function Root() {
             })}
           </ul>
         </nav>
-        <main className="w-4/5 p-2">
+        <main className="w-4/5 p-2 overflow-y-scroll">
           <Outlet />
         </main>
       </div>
