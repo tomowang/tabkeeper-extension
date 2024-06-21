@@ -21,6 +21,9 @@ export default function StatusBar({
   } else if (tab?.status === "unloaded") {
     statusColor = "gray";
   }
+  if (search === "" && duplicationInfo.count === 0 && tab === null) {
+    return null;
+  }
   return (
     <Card size="sm">
       <CardBody className="max-w-full w-full">
