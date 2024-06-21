@@ -3,6 +3,22 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "description": "TabKeeper is a browser extension that helps you manage your tabs and tab groups",
+  "author": {
+    "name": "Xiaoliang Wang",
+    "email": "zero@tomo.dev",
+    "url": "https://tomo.dev"
+  },
+  "keywords": [
+    "browser",
+    "extension",
+    "tab",
+    "tabGroups"
+  ],
+  "bugs": {
+    "url": "https://github.com/tomowang/tabkeeper-extension/issues"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
