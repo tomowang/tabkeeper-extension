@@ -40,6 +40,14 @@ export default function SessionBox() {
     });
   }
 
+  async function restoreSessionBox(item: ISessionBoxItem) {
+    await Promise.all(
+      item.urls.map(async (url) => {
+        await chrome.tabs.create({ url });
+      })
+    );
+  }
+
   function handleAdd() {
     setNewItem({
       title: "",
@@ -94,6 +102,9 @@ export default function SessionBox() {
               }}
               handleDelete={() => {
                 handleDeleteItem(index);
+              }}
+              handleRestore={() => {
+                void restoreSessionBox(item);
               }}
             ></SessionBoxItem>
           );

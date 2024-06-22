@@ -5,9 +5,11 @@ import {
   CardBody,
   FormControl,
   HStack,
+  Icon,
   IconButton,
   Input,
   Spacer,
+  Tooltip,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -17,15 +19,18 @@ import {
   MdOutlineAddCircleOutline,
   MdRemoveCircleOutline,
 } from "react-icons/md";
+import { LiaWindowRestore } from "react-icons/lia";
 
 interface SessionBoxItemProps {
   item: ISessionBoxItem;
+  handleRestore?: () => void;
   handleUpdate: (item: ISessionBoxItem) => void;
   handleDelete: () => void;
 }
 
 export default function SessionBoxItem({
   item,
+  handleRestore,
   handleUpdate,
   handleDelete,
 }: SessionBoxItemProps) {
@@ -36,7 +41,7 @@ export default function SessionBoxItem({
         <HStack>
           <IconButton
             size="sm"
-            aria-label={"toggle"}
+            aria-label={"Toggle"}
             variant="ghost"
             onClick={onToggle}
             icon={isOpen ? <FaCaretDown /> : <FaCaretRight />}
@@ -53,6 +58,22 @@ export default function SessionBoxItem({
               }}
             />
           </FormControl>
+          {handleRestore && (
+            <Tooltip hasArrow placement="bottom-start" label="Restore">
+              <Box>
+                <Icon
+                  h={6}
+                  w={6}
+                  aria-label="Restore"
+                  cursor="pointer"
+                  color="blue.500"
+                  as={LiaWindowRestore}
+                  tabIndex={-1}
+                  onClick={handleRestore}
+                ></Icon>
+              </Box>
+            </Tooltip>
+          )}
           <Spacer />
           <IconButton
             size="sm"
