@@ -93,10 +93,10 @@ function TabKeeper() {
             };
             if (search) {
               t.tkFilter = true;
-              const regex = new RegExp(search, "i");
+              const term = search.toLowerCase();
               const title = tab.title?.toLowerCase();
               const url = tab.url?.toLowerCase();
-              if (title?.match(regex) ?? url?.match(regex)) {
+              if (title?.indexOf(term) != -1 ?? url?.indexOf(term) != -1) {
                 t.tkMatched = true;
                 selectedTabs.push(tab.id);
               }
