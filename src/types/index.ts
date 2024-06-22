@@ -63,3 +63,8 @@ export interface IAutoGroupRule {
   enabled: boolean;
   pattern: string;
 }
+
+export interface ISessionBoxItem {
+  title: string;
+  urls: string[];
+}
