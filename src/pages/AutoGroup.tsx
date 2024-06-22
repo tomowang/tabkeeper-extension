@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import AutoGroupItem from "@/components/AutoGroupItem";
 import { IAutoGroupRule } from "@/types";
-import { Button, Flex, Heading, VStack, useToast } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import { tabGroupColors } from "@/utils/const";
 import { FaSave, FaRegPlusSquare } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
@@ -102,9 +110,14 @@ export default function AutoGroup() {
   }
   return (
     <>
-      <Heading as="h2" size="sm" mb={2}>
-        Auto Group Rules
-      </Heading>
+      <HStack mb={2}>
+        <Heading as="h2" size="sm">
+          Auto Group Rules
+        </Heading>
+        <Badge variant="solid" colorScheme="blue">
+          {items.length}
+        </Badge>
+      </HStack>
       <VStack spacing={2}>
         {items.map((item, index) => {
           return (

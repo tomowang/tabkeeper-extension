@@ -1,6 +1,14 @@
 import SessionBoxItem from "@/components/SessionBoxItem";
 import { ISessionBoxItem } from "@/types";
-import { Button, Flex, Heading, VStack, useToast } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaRegPlusSquare, FaSave } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
@@ -88,9 +96,14 @@ export default function SessionBox() {
 
   return (
     <>
-      <Heading as="h2" size="sm" mb={2}>
-        Session Boxes
-      </Heading>
+      <HStack mb={2}>
+        <Heading as="h2" size="sm">
+          Session Box
+        </Heading>
+        <Badge variant="solid" colorScheme="blue">
+          {items.length}
+        </Badge>
+      </HStack>
       <VStack spacing={2}>
         {items.map((item, index) => {
           return (

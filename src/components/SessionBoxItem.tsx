@@ -1,5 +1,6 @@
 import { ISessionBoxItem } from "@/types";
 import {
+  Badge,
   Box,
   Card,
   CardBody,
@@ -58,6 +59,9 @@ export default function SessionBoxItem({
               }}
             />
           </FormControl>
+          <Badge variant="solid" colorScheme="blue">
+            {item.urls.length}
+          </Badge>
           {handleRestore && (
             <Tooltip hasArrow placement="bottom-start" label="Restore">
               <Box>
