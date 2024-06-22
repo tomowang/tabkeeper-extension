@@ -8,6 +8,8 @@ import {
   HStack,
   IconButton,
   Input,
+  Radio,
+  RadioGroup,
   Spacer,
   Switch,
   VStack,
@@ -72,18 +74,31 @@ export default function AutoGroupItem({
               ></IconButton>
             </Box>
           </HStack>
-          <FormControl isRequired>
-            <Input
-              isRequired={true}
-              placeholder="Tab group pattern"
-              size="sm"
-              borderRadius="md"
-              value={item.pattern}
-              onChange={(e) =>
-                handleUpdate({ ...item, pattern: e.target.value })
-              }
-            ></Input>
-          </FormControl>
+          <HStack>
+            <FormControl isRequired w={60}>
+              <Input
+                isRequired={true}
+                placeholder="Tab group pattern"
+                size="sm"
+                borderRadius="md"
+                value={item.pattern}
+                onChange={(e) =>
+                  handleUpdate({ ...item, pattern: e.target.value })
+                }
+              ></Input>
+            </FormControl>
+            <RadioGroup
+              onChange={(e) => {
+                handleUpdate({ ...item, mode: e as "wildcard" | "regex" });
+              }}
+              value={item.mode}
+            >
+              <HStack>
+                <Radio value="wildcard">Wildcard</Radio>
+                <Radio value="regex">RegEx</Radio>
+              </HStack>
+            </RadioGroup>
+          </HStack>
         </VStack>
       </CardBody>
     </Card>

@@ -70,6 +70,20 @@ export default function AutoGroup() {
       });
       return;
     }
+    if (newItem.mode === "regex") {
+      try {
+        new RegExp(newItem.pattern);
+      } catch (error) {
+        toast({
+          title: "Invalid regex pattern",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+        return;
+      }
+    }
     const newItems = [...items, newItem];
     chrome.storage.local.set({ autoGroupRules: newItems }, () => {
       setItems(newItems);
