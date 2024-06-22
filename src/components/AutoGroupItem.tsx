@@ -4,10 +4,12 @@ import {
   Card,
   CardBody,
   FormControl,
+  FormLabel,
   HStack,
   IconButton,
   Input,
   Spacer,
+  Switch,
   VStack,
 } from "@chakra-ui/react";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -28,7 +30,7 @@ export default function AutoGroupItem({
     <Card w="full" size="sm" variant="outline">
       <CardBody>
         <VStack spacing={2} align="start">
-          <HStack w="full">
+          <HStack w="full" alignItems="center">
             <FormControl isRequired w={48}>
               <Input
                 isRequired={true}
@@ -47,6 +49,16 @@ export default function AutoGroupItem({
                 handleUpdate({ ...item, color })
               }
             ></ColorChoice>
+            <FormControl w="auto" display="flex" alignItems="center">
+              <FormLabel mb="0">Enable?</FormLabel>
+              <Switch
+                size="sm"
+                isChecked={item.enabled}
+                onChange={(e) =>
+                  handleUpdate({ ...item, enabled: e.target.checked })
+                }
+              />
+            </FormControl>
             <Spacer />
             <Box>
               <IconButton

@@ -43,6 +43,7 @@ export default function AutoGroup() {
       title: "",
       color: tabGroupColors[items.length % tabGroupColors.length],
       mode: "wildcard",
+      enabled: true,
       pattern: "",
     };
     setNewItem(item);

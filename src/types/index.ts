@@ -60,5 +60,6 @@ export interface IAutoGroupRule {
   title: string;
   color: chrome.tabGroups.ColorEnum;
   mode: "wildcard" | "regex";
+  enabled: boolean;
   pattern: string;
 }

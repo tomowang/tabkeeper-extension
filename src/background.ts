@@ -46,7 +46,8 @@ async function autoGroupTab(tab: chrome.tabs.Tab) {
   };
   for (const rule of autoGroupRules) {
     let regex: RegExp;
-    const { title, color, mode, pattern } = rule;
+    const { title, color, enabled, mode, pattern } = rule;
+    if (!enabled) continue;
     if (mode === "wildcard") {
       regex = new RegExp(pattern.split("*").map(escapeRegExp).join(".*"), "i");
     } else {
