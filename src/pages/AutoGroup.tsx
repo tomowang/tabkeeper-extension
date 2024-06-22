@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AutoGroupItem from "@/components/AutoGroupItem";
 import { IAutoGroupRule } from "@/types";
-import { Box, Button, Flex, Heading, useToast } from "@chakra-ui/react";
+import { Button, Flex, Heading, VStack, useToast } from "@chakra-ui/react";
 import { tabGroupColors } from "@/utils/const";
 import { FaSave, FaRegPlusSquare } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
@@ -102,28 +102,25 @@ export default function AutoGroup() {
   }
   return (
     <>
-      <Heading as="h2" size="sm">
+      <Heading as="h2" size="sm" mb={2}>
         Auto Group Rules
       </Heading>
-      <Flex direction="column">
+      <VStack spacing={2}>
         {items.map((item, index) => {
           return (
-            <Box mt={2} key={index}>
-              <AutoGroupItem
-                item={item}
-                handleUpdate={(item: IAutoGroupRule) => {
-                  handleUpdate(index, item);
-                }}
-                handleDelete={() => {
-                  handleDeleteItem(index);
-                }}
-              ></AutoGroupItem>
-            </Box>
+            <AutoGroupItem
+              key={index}
+              item={item}
+              handleUpdate={(item: IAutoGroupRule) => {
+                handleUpdate(index, item);
+              }}
+              handleDelete={() => {
+                handleDeleteItem(index);
+              }}
+            ></AutoGroupItem>
           );
         })}
-      </Flex>
-      {newItem && (
-        <Box mt={2}>
+        {newItem && (
           <AutoGroupItem
             item={newItem}
             handleUpdate={(item: IAutoGroupRule) => {
@@ -133,8 +130,8 @@ export default function AutoGroup() {
               setNewItem(null);
             }}
           ></AutoGroupItem>
-        </Box>
-      )}
+        )}
+      </VStack>
       <Flex direction="row" justifyContent="flex-end" gap={2} mt={2}>
         {newItem === null && (
           <Button
