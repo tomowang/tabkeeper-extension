@@ -89,8 +89,6 @@ export default function TabGroup({
                 value={group.title}
                 placeholder="Name This Group"
                 onChange={(e) => {
-                  console.log(e.target.value);
-                  console.log(new RegExp(e.target.value).test("abc"));
                   handleClickGroupMenu(group.id, TabGroupMenuAction.Update, {
                     title: e.target.value,
                   });
