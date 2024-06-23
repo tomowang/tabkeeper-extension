@@ -5,8 +5,9 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
 import Root from "./routes/root";
+import { menus } from "./routes/menus";
 import ErrorPage from "./error-page";
-import { menus, tabGroupColorMap } from "./utils/const";
+import { tabGroupColorMap } from "./utils/const";
 
 const theme = extendTheme({
   colors: tabGroupColorMap,

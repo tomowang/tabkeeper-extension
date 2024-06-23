@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { NavItem } from "@/components/nav";
 
-import { menus } from "@/utils/const";
+import { menus } from "./menus";
 
 export default function Root() {
   return (
