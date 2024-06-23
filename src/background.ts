@@ -43,6 +43,7 @@ async function autoGroupTab(tab: chrome.tabs.Tab) {
   )) as {
     autoGroupRules: IAutoGroupRule[];
   };
+  if (!autoGroupRules) return;
   for (const rule of autoGroupRules) {
     let regex: RegExp;
     const { title, color, enabled, mode, pattern } = rule;
