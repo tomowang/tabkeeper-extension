@@ -29,7 +29,7 @@ import {
 } from "@chakra-ui/react";
 import ToolBar from "@/components/ToolBar";
 import StatusBar from "@/components/StatusBar";
-import { defaultdict } from "@/utils";
+import { defaultdict, genFaviconFromURL } from "@/utils";
 import { S_KEY_SESSION_BOX, colorPalette } from "@/utils/const";
 import { FaSave } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
@@ -90,24 +90,6 @@ function TabKeeper() {
         tabUrlIDMapping: tabUrlIDMapping,
       });
       const ws = wins.map((win) => {
-        win.tabs?.forEach((tab) => {
-          // TODO: use rules to apply favIconUrl and support Edge URLs
-          if (tab.url?.startsWith("chrome://extensions/")) {
-            tab.favIconUrl = "images/extension-icon.svg";
-          } else if (
-            tab.url?.startsWith("chrome://newtab") ??
-            tab.url?.startsWith("chrome://new-tab-page") ??
-            tab.url?.startsWith("chrome://whats-new/")
-          ) {
-            tab.favIconUrl = "images/browser-chrome-icon.svg";
-          } else if (tab.url?.startsWith("chrome://bookmarks")) {
-            tab.favIconUrl = "images/browser-bookmarks.svg";
-          } else if (tab.url?.startsWith("chrome://version/")) {
-            tab.favIconUrl = "images/google-chrome-icon.svg";
-          } else if (tab.url?.startsWith("chrome://")) {
-            tab.favIconUrl = "images/globe-line-icon.svg";
-          }
-        });
         const w: IWindow = { ...win, tkTabs: [] };
         if (win.tabs) {
           w.tkTabs = win.tabs?.map((tab) => {
@@ -117,6 +99,7 @@ function TabKeeper() {
                 tkFilter: false,
                 tkMatched: false,
                 tkColor: "yellow",
+                tkFavicon: genFaviconFromURL(tab.url, tab.favIconUrl),
               },
             };
             if (search) {

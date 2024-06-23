@@ -1,4 +1,5 @@
 import { ElementType, ReactNode } from "react";
+import { IconType } from "react-icons";
 
 export type TabGroups = Record<number, chrome.tabGroups.TabGroup>;
 
@@ -16,6 +17,7 @@ export interface ITab extends chrome.tabs.Tab {
   tkFilter: boolean; // filter mode or not
   tkMatched: boolean; // matched or not
   tkColor: string; // highlight color when matched
+  tkFavicon: string | IconType; // favicon url or icon
 }
 
 export interface IMenu {

@@ -8,6 +8,7 @@ import {
   VStack,
   Image,
   PopoverArrow,
+  Icon,
 } from "@chakra-ui/react";
 import {
   RiFocus3Line,
@@ -21,6 +22,27 @@ import { TbVolume, TbVolumeOff } from "react-icons/tb";
 import { IoMdRefresh } from "react-icons/io";
 import { TbHighlight, TbHighlightOff } from "react-icons/tb";
 import ActionMenuItem from "./ActionMenuItem";
+
+interface FavIconProps {
+  tab: ITab;
+  boxSize: number;
+  className?: string;
+}
+
+function FavIcon({ tab, boxSize, className }: FavIconProps) {
+  if (typeof tab.tkFavicon === "string") {
+    return (
+      <Image
+        src={tab.tkFavicon}
+        w={boxSize}
+        h={boxSize}
+        className={className}
+      ></Image>
+    );
+  } else {
+    return <Icon as={tab.tkFavicon} w={boxSize} h={boxSize}></Icon>;
+  }
+}
 
 interface TabProps {
   tab: ITab;
@@ -40,38 +62,11 @@ export default function Tab({
   if (tab.status === "unloaded") {
     imageClassName = "rounded-full border-2 border-slate-500 border-dashed";
   }
-  let img = (
-    <Image
-      src={tab.favIconUrl}
-      w={boxSize}
-      h={boxSize}
-      className={imageClassName}
-    ></Image>
-  );
   if (tab.tkFilter) {
     if (tab.tkMatched) {
       padding = 0.5;
       boxSize = 5;
       boxShadowValue = `inset 0 0 0 99999px ${tab.tkColor}`;
-      img = (
-        <Image
-          src={tab.favIconUrl}
-          w={boxSize}
-          h={boxSize}
-          className={imageClassName}
-        ></Image>
-      );
-    } else {
-      img = (
-        <Image
-          src={tab.favIconUrl}
-          w={boxSize}
-          h={boxSize}
-          className={imageClassName}
-          filter="auto"
-          blur="2px"
-        ></Image>
-      );
     }
   }
   return (
@@ -88,7 +83,7 @@ export default function Tab({
           boxShadow={boxShadowValue}
           onMouseOver={() => handleTabMouseEvent(tab)}
         >
-          {img}
+          <FavIcon tab={tab} boxSize={boxSize} className={imageClassName} />
         </Flex>
       </PopoverTrigger>
       <PopoverContent w="auto" _focusVisible={{ outline: "none" }}>
