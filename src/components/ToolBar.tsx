@@ -96,6 +96,7 @@ export default function ToolBar({
         label={`Deduplicate ${
           duplicationInfo.totalCount - duplicationInfo.count
         } tabs`}
+        labelForDisabled="Deduplicate"
         icon={TbTriangleSquareCircle}
         isDisabled={duplicationInfo.count === 0}
         onClick={() => {
@@ -103,7 +104,8 @@ export default function ToolBar({
         }}
       ></ToolBarAction>
       <ToolBarAction
-        label={`Group ${count} tabs`}
+        label={`Pin ${count} tabs`}
+        labelForDisabled="Pin"
         icon={RiPushpinLine}
         isDisabled={count === 0}
         onClick={() => {
@@ -111,7 +113,8 @@ export default function ToolBar({
         }}
       ></ToolBarAction>
       <ToolBarAction
-        label={`Ungroup ${count} tabs`}
+        label={`Unpin ${count} tabs`}
+        labelForDisabled="Unpin"
         icon={RiUnpinLine}
         isDisabled={count === 0}
         onClick={() => {
@@ -120,6 +123,7 @@ export default function ToolBar({
       ></ToolBarAction>
       <ToolBarAction
         label={`Group ${count} tabs`}
+        labelForDisabled="Group"
         icon={LiaObjectGroup}
         isDisabled={count === 0}
         onClick={() => {
@@ -128,6 +132,7 @@ export default function ToolBar({
       ></ToolBarAction>
       <ToolBarAction
         label={`Ungroup ${count} tabs`}
+        labelForDisabled="Ungroup"
         icon={LiaObjectUngroup}
         isDisabled={count === 0}
         onClick={() => {
@@ -136,6 +141,7 @@ export default function ToolBar({
       ></ToolBarAction>
       <ToolBarAction
         label={`Unload ${count} tabs`}
+        labelForDisabled="Unload"
         icon={PiMemory}
         isDisabled={count === 0}
         onClick={() => {
@@ -144,6 +150,7 @@ export default function ToolBar({
       ></ToolBarAction>
       <ToolBarAction
         label={`Reload ${count} tabs`}
+        labelForDisabled="Reload"
         icon={IoMdRefresh}
         isDisabled={count === 0}
         onClick={() => {
@@ -152,6 +159,7 @@ export default function ToolBar({
       ></ToolBarAction>
       <ToolBarAction
         label={`Close ${count} tabs`}
+        labelForDisabled="Close"
         icon={RiCloseLine}
         isDisabled={count === 0}
         onClick={() => {
@@ -164,6 +172,7 @@ export default function ToolBar({
 
 interface ToolBarActionProps {
   label: string;
+  labelForDisabled?: string;
   icon: ElementType;
   isDisabled: boolean;
   isChecked?: boolean;
@@ -172,13 +181,17 @@ interface ToolBarActionProps {
 
 function ToolBarAction({
   label,
+  labelForDisabled,
   icon,
   isDisabled,
   isChecked,
   onClick,
 }: ToolBarActionProps) {
   return (
-    <Tooltip label={label} isDisabled={isDisabled} hasArrow>
+    <Tooltip
+      label={labelForDisabled && isDisabled ? labelForDisabled : label}
+      hasArrow
+    >
       <Box
         as="span"
         cursor={isDisabled ? "not-allowed" : "pointer"}
