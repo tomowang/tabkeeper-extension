@@ -70,3 +70,8 @@ export const tabGroupColorMap: Record<string, string> = {
   g_cyan: "#027C84",
   g_orange: "#F8913F",
 };
+
+export const EXTENSION_BADGE_COLOR = "#1B74E8";
+
+export const S_KEY_AUTO_GROUP_RULES = "autoGroupRules";
+export const S_KEY_SESSION_BOX = "sessionBox";

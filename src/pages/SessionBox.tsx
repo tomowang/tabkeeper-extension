@@ -1,5 +1,6 @@
 import SessionBoxItem from "@/components/SessionBoxItem";
 import { ISessionBoxItem } from "@/types";
+import { S_KEY_SESSION_BOX } from "@/utils/const";
 import {
   Badge,
   Button,
@@ -18,7 +19,7 @@ export default function SessionBox() {
   const [items, setItems] = useState<ISessionBoxItem[]>([]);
   const [newItem, setNewItem] = useState<ISessionBoxItem | null>(null);
   useEffect(() => {
-    chrome.storage.local.get("sessionBox", ({ sessionBox }) => {
+    chrome.storage.local.get(S_KEY_SESSION_BOX, ({ sessionBox }) => {
       if (sessionBox) {
         setItems(sessionBox as ISessionBoxItem[]);
       }
@@ -28,7 +29,7 @@ export default function SessionBox() {
   function handleUpdate(index: number, item: ISessionBoxItem) {
     const newItems = [...items];
     newItems[index] = item;
-    chrome.storage.local.set({ sessionBox: newItems }, () => {
+    chrome.storage.local.set({ S_KEY_SESSION_BOX: newItems }, () => {
       setItems(newItems);
     });
   }
@@ -36,7 +37,7 @@ export default function SessionBox() {
   function handleDeleteItem(index: number) {
     const newItems = [...items];
     newItems.splice(index, 1);
-    chrome.storage.local.set({ sessionBox: newItems }, () => {
+    chrome.storage.local.set({ S_KEY_SESSION_BOX: newItems }, () => {
       setItems(newItems);
       toast({
         title: "Session Box deleted",
@@ -81,7 +82,7 @@ export default function SessionBox() {
       return;
     }
     const newItems = [...items, newItem];
-    chrome.storage.local.set({ sessionBox: newItems }, () => {
+    chrome.storage.local.set({ S_KEY_SESSION_BOX: newItems }, () => {
       setItems(newItems);
       setNewItem(null);
       toast({

@@ -30,7 +30,7 @@ import {
 import ToolBar from "@/components/ToolBar";
 import StatusBar from "@/components/StatusBar";
 import { defaultdict } from "@/utils";
-import { colorPalette } from "@/utils/const";
+import { S_KEY_SESSION_BOX, colorPalette } from "@/utils/const";
 import { FaSave } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 
@@ -301,7 +301,9 @@ function TabKeeper() {
 
   async function handleSaveSessionBox() {
     if (!sessionBoxTitle) return;
-    const { sessionBox } = (await chrome.storage.local.get("sessionBox")) as {
+    const { sessionBox } = (await chrome.storage.local.get(
+      S_KEY_SESSION_BOX
+    )) as {
       sessionBox: ISessionBoxItem[];
     };
     const session: ISessionBoxItem = {

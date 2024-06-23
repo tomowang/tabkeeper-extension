@@ -1,6 +1,5 @@
 import { IAutoGroupRule } from "./types";
-
-const badgeColor = "#1B74E8";
+import { EXTENSION_BADGE_COLOR, S_KEY_AUTO_GROUP_RULES } from "./utils/const";
 
 chrome.runtime.onInstalled.addListener(() => {
   console.log("tabkeeper is installed");
@@ -15,7 +14,7 @@ async function onTabsUpdated() {
     text = length.toString();
   }
   await chrome.action.setBadgeText({ text });
-  await chrome.action.setBadgeBackgroundColor({ color: badgeColor });
+  await chrome.action.setBadgeBackgroundColor({ color: EXTENSION_BADGE_COLOR });
 }
 
 chrome.tabs.onCreated.addListener(() => {
@@ -40,7 +39,7 @@ async function autoGroupTab(tab: chrome.tabs.Tab) {
   }
   if (!tab.url) return;
   const { autoGroupRules } = (await chrome.storage.local.get(
-    "autoGroupRules"
+    S_KEY_AUTO_GROUP_RULES
   )) as {
     autoGroupRules: IAutoGroupRule[];
   };

@@ -10,7 +10,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { tabGroupColors } from "@/utils/const";
+import { S_KEY_AUTO_GROUP_RULES, tabGroupColors } from "@/utils/const";
 import { FaSave, FaRegPlusSquare } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 
@@ -19,7 +19,7 @@ export default function AutoGroup() {
   const [items, setItems] = useState<IAutoGroupRule[]>([]);
   const [newItem, setNewItem] = useState<IAutoGroupRule | null>(null);
   useEffect(() => {
-    chrome.storage.local.get("autoGroupRules", ({ autoGroupRules }) => {
+    chrome.storage.local.get(S_KEY_AUTO_GROUP_RULES, ({ autoGroupRules }) => {
       if (autoGroupRules) {
         setItems(autoGroupRules as IAutoGroupRule[]);
       }
@@ -28,14 +28,14 @@ export default function AutoGroup() {
   function handleUpdate(index: number, item: IAutoGroupRule) {
     const newItems = [...items];
     newItems[index] = item;
-    chrome.storage.local.set({ autoGroupRules: newItems }, () => {
+    chrome.storage.local.set({ S_KEY_AUTO_GROUP_RULES: newItems }, () => {
       setItems(newItems);
     });
   }
   function handleDeleteItem(index: number) {
     const newItems = [...items];
     newItems.splice(index, 1);
-    chrome.storage.local.set({ autoGroupRules: newItems }, () => {
+    chrome.storage.local.set({ S_KEY_AUTO_GROUP_RULES: newItems }, () => {
       setItems(newItems);
       toast({
         title: "Auto Group rule deleted",
@@ -93,7 +93,7 @@ export default function AutoGroup() {
       }
     }
     const newItems = [...items, newItem];
-    chrome.storage.local.set({ autoGroupRules: newItems }, () => {
+    chrome.storage.local.set({ S_KEY_AUTO_GROUP_RULES: newItems }, () => {
       setItems(newItems);
       setNewItem(null);
       toast({
