@@ -3,7 +3,7 @@ import { Badge, Card, CardBody, Text, Stack } from "@chakra-ui/react";
 
 interface StatusBarProps {
   search: string;
-  selectedTabs: (number | undefined)[];
+  selectedTabs: chrome.tabs.Tab[];
   duplicationInfo: DuplicationInfo;
   tab: chrome.tabs.Tab | null;
 }

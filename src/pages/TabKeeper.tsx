@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Window from "@/components/Window";
 import {
   DuplicationInfo,
+  ISessionBoxItem,
   ITab,
   IWindow,
   TabGroupMenuAction,
@@ -9,24 +10,49 @@ import {
   TabMenuAction,
   ToolbarAction,
 } from "@/types";
-import { Box, Flex, Spacer } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spacer,
+  useDisclosure,
+} from "@chakra-ui/react";
 import ToolBar from "@/components/ToolBar";
 import StatusBar from "@/components/StatusBar";
 import { defaultdict } from "@/utils";
 import { colorPalette } from "@/utils/const";
+import { FaSave } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
 
 function TabKeeper() {
   const [wins, setWins] = useState<IWindow[]>([]);
   const [groups, setGroups] = useState<TabGroups>({});
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab | null>(null);
   const [search, setSearch] = useState<string>("");
-  const [selectedTabs, setSelectedTabs] = useState<(number | undefined)[]>([]);
+  const [selectedTabs, setSelectedTabs] = useState<chrome.tabs.Tab[]>([]);
   const [showDuplications, setShowDuplications] = useState<boolean>(false);
   const [duplicationInfo, setDuplicationInfo] = useState<DuplicationInfo>({
     count: 0,
     totalCount: 0,
     tabUrlIDMapping: {},
   });
+
+  const {
+    isOpen: isModalOpen,
+    onOpen: onOpenModal,
+    onClose: onCloseModal,
+  } = useDisclosure();
+  const [sessionBoxTitle, setSessionBoxTitle] = useState<string>("");
+
   const fetchData = useCallback(
     async function () {
       const groups: TabGroups = {};
@@ -38,7 +64,7 @@ function TabKeeper() {
       tabGroups.forEach((group) => {
         groups[group.id] = group;
       });
-      const selectedTabs: (number | undefined)[] = [];
+      const selectedTabs: chrome.tabs.Tab[] = [];
       const tabUrlIDMapping = defaultdict(Array<number>);
       const tabUrlColorMapping = {} as Record<string, string>;
       wins.forEach((win) => {
@@ -98,7 +124,7 @@ function TabKeeper() {
               const url = tab.url?.toLowerCase();
               if (title?.indexOf(term) != -1 ?? url?.indexOf(term) != -1) {
                 t.tkMatched = true;
-                selectedTabs.push(tab.id);
+                selectedTabs.push(tab);
               }
             } else if (showDuplications) {
               t.tkFilter = true;
@@ -201,13 +227,20 @@ function TabKeeper() {
   }
 
   async function handleToolbarAction(
-    tabIds: (number | undefined)[],
+    tabs: chrome.tabs.Tab[] | number[],
     action: ToolbarAction
   ) {
-    if (tabIds.length === 0 && action !== ToolbarAction.HighlightDuplicates) {
+    if (tabs.length === 0 && action !== ToolbarAction.HighlightDuplicates) {
       return;
     }
-    const ids = tabIds.flatMap((t) => (t !== undefined ? [t] : []));
+    const ids = tabs.flatMap((t: chrome.tabs.Tab | number) => {
+      if (typeof t === "number") {
+        return [t];
+      } else {
+        return t.id !== undefined ? [t.id] : [];
+      }
+    });
+
     switch (action) {
       case ToolbarAction.Close:
         await chrome.tabs.remove(ids);
@@ -254,8 +287,24 @@ function TabKeeper() {
         await chrome.tabs.remove(ids);
         setShowDuplications(false);
         break;
+      case ToolbarAction.SaveSession:
+        onOpenModal();
+        break;
     }
     await fetchData();
+  }
+
+  async function handleSaveSessionBox() {
+    if (!sessionBoxTitle) return;
+    const { sessionBox } = (await chrome.storage.local.get("sessionBox")) as {
+      sessionBox: ISessionBoxItem[];
+    };
+    const session: ISessionBoxItem = {
+      title: sessionBoxTitle,
+      urls: selectedTabs.flatMap((t) => (t.url !== undefined ? [t.url] : [])),
+    };
+    sessionBox.push(session);
+    await chrome.storage.local.set({ sessionBox });
   }
 
   function handleTabMouseEvent(tab: chrome.tabs.Tab | null) {
@@ -274,9 +323,9 @@ function TabKeeper() {
         showDuplications={showDuplications}
         duplicationInfo={duplicationInfo}
         handleToolbarAction={(
-          tabIds: (number | undefined)[],
+          tabs: chrome.tabs.Tab[] | number[],
           action: ToolbarAction
-        ) => void handleToolbarAction(tabIds, action)}
+        ) => void handleToolbarAction(tabs, action)}
       ></ToolBar>
       <Flex wrap="wrap" mx="auto" gap={2}>
         {wins.map((win, index) => {
@@ -301,14 +350,54 @@ function TabKeeper() {
         })}
       </Flex>
       <Spacer />
-      <Box>
-        <StatusBar
-          search={search}
-          selectedTabs={selectedTabs}
-          duplicationInfo={duplicationInfo}
-          tab={viewTab}
-        />
-      </Box>
+      <StatusBar
+        search={search}
+        selectedTabs={selectedTabs}
+        duplicationInfo={duplicationInfo}
+        tab={viewTab}
+      />
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isModalOpen}
+        onClose={onCloseModal}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Save tabs to session box</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl isRequired>
+              <FormLabel>Title</FormLabel>
+              <Input
+                value={sessionBoxTitle}
+                onChange={(e) => setSessionBoxTitle(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              isDisabled={sessionBoxTitle === ""}
+              size="sm"
+              colorScheme="blue"
+              mr={3}
+              leftIcon={<FaSave />}
+              onClick={() => {
+                void handleSaveSessionBox();
+                onCloseModal();
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              size="sm"
+              onClick={onCloseModal}
+              leftIcon={<MdOutlineCancel />}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }

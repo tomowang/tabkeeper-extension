@@ -19,15 +19,16 @@ import {
   TbTriangleSquareCircle,
   TbTriangleSquareCircleFilled,
 } from "react-icons/tb";
+import { FaRegSave } from "react-icons/fa";
 
 interface ToolBarProps {
   search: string;
   handleSearch: (search: string) => void;
-  selectedTabs: (number | undefined)[];
+  selectedTabs: chrome.tabs.Tab[];
   showDuplications: boolean;
   duplicationInfo: DuplicationInfo;
   handleToolbarAction: (
-    tabIds: (number | undefined)[],
+    tabs: chrome.tabs.Tab[] | number[],
     action: ToolbarAction
   ) => void;
 }
@@ -164,6 +165,15 @@ export default function ToolBar({
         isDisabled={count === 0}
         onClick={() => {
           handleToolbarAction(selectedTabs, ToolbarAction.Close);
+        }}
+      ></ToolBarAction>
+      <ToolBarAction
+        label={`Save ${count} tabs to session box`}
+        labelForDisabled="Save to session box"
+        icon={FaRegSave}
+        isDisabled={count === 0}
+        onClick={() => {
+          handleToolbarAction(selectedTabs, ToolbarAction.SaveSession);
         }}
       ></ToolBarAction>
     </Flex>

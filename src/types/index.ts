@@ -54,6 +54,7 @@ export enum ToolbarAction {
   HighlightDuplicates,
   Pin,
   Unpin,
+  SaveSession,
 }
 
 export interface IAutoGroupRule {
