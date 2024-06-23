@@ -29,7 +29,7 @@ export default function SessionBox() {
   function handleUpdate(index: number, item: ISessionBoxItem) {
     const newItems = [...items];
     newItems[index] = item;
-    chrome.storage.local.set({ S_KEY_SESSION_BOX: newItems }, () => {
+    chrome.storage.local.set({ [S_KEY_SESSION_BOX]: newItems }, () => {
       setItems(newItems);
     });
   }
@@ -37,7 +37,7 @@ export default function SessionBox() {
   function handleDeleteItem(index: number) {
     const newItems = [...items];
     newItems.splice(index, 1);
-    chrome.storage.local.set({ S_KEY_SESSION_BOX: newItems }, () => {
+    chrome.storage.local.set({ [S_KEY_SESSION_BOX]: newItems }, () => {
       setItems(newItems);
       toast({
         title: "Session Box deleted",
@@ -82,7 +82,7 @@ export default function SessionBox() {
       return;
     }
     const newItems = [...items, newItem];
-    chrome.storage.local.set({ S_KEY_SESSION_BOX: newItems }, () => {
+    chrome.storage.local.set({ [S_KEY_SESSION_BOX]: newItems }, () => {
       setItems(newItems);
       setNewItem(null);
       toast({

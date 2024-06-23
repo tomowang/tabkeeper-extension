@@ -28,14 +28,14 @@ export default function AutoGroup() {
   function handleUpdate(index: number, item: IAutoGroupRule) {
     const newItems = [...items];
     newItems[index] = item;
-    chrome.storage.local.set({ S_KEY_AUTO_GROUP_RULES: newItems }, () => {
+    chrome.storage.local.set({ [S_KEY_AUTO_GROUP_RULES]: newItems }, () => {
       setItems(newItems);
     });
   }
   function handleDeleteItem(index: number) {
     const newItems = [...items];
     newItems.splice(index, 1);
-    chrome.storage.local.set({ S_KEY_AUTO_GROUP_RULES: newItems }, () => {
+    chrome.storage.local.set({ [S_KEY_AUTO_GROUP_RULES]: newItems }, () => {
       setItems(newItems);
       toast({
         title: "Auto Group rule deleted",
@@ -93,7 +93,7 @@ export default function AutoGroup() {
       }
     }
     const newItems = [...items, newItem];
-    chrome.storage.local.set({ S_KEY_AUTO_GROUP_RULES: newItems }, () => {
+    chrome.storage.local.set({ [S_KEY_AUTO_GROUP_RULES]: newItems }, () => {
       setItems(newItems);
       setNewItem(null);
       toast({
