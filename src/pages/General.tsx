@@ -10,7 +10,9 @@ import {
   List,
   ListIcon,
   ListItem,
+  Image,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import {
   FaDownload,
@@ -139,6 +141,14 @@ export default function General() {
                 <Link href="https://github.com/tomowang/tabkeeper-extension/discussions">
                   Feature request and general discussions
                 </Link>
+              </ListItem>
+              <ListItem>
+                <HStack>
+                  <Image w={3} h={3} src="/images/logo-32.png" alt="Logo" />
+                  <Link href="https://www.flaticon.com/free-icons/tabs">
+                    Tabs icons created by Freepik - Flaticon
+                  </Link>
+                </HStack>
               </ListItem>
             </List>
           </CardBody>
