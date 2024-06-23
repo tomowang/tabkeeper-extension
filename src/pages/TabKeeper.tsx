@@ -25,6 +25,7 @@ import {
   ModalOverlay,
   Spacer,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import ToolBar from "@/components/ToolBar";
 import StatusBar from "@/components/StatusBar";
@@ -34,6 +35,7 @@ import { FaSave } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 
 function TabKeeper() {
+  const toast = useToast();
   const [wins, setWins] = useState<IWindow[]>([]);
   const [groups, setGroups] = useState<TabGroups>({});
   const [viewTab, setViewTab] = useState<chrome.tabs.Tab | null>(null);
@@ -308,6 +310,14 @@ function TabKeeper() {
     };
     sessionBox.push(session);
     await chrome.storage.local.set({ sessionBox });
+    toast({
+      title: "Session saved",
+      description: `Session "${sessionBoxTitle}" saved successfully`,
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+      position: "bottom-right",
+    });
   }
 
   function handleTabMouseEvent(tab: chrome.tabs.Tab | null) {
