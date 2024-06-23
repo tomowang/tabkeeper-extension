@@ -122,7 +122,10 @@ function TabKeeper() {
               const term = search.toLowerCase();
               const title = tab.title?.toLowerCase();
               const url = tab.url?.toLowerCase();
-              if (title?.indexOf(term) != -1 ?? url?.indexOf(term) != -1) {
+              if (
+                (title !== undefined && title.indexOf(term) != -1) ||
+                (url !== undefined && url.indexOf(term) != -1)
+              ) {
                 t.tkMatched = true;
                 selectedTabs.push(tab);
               }
