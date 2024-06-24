@@ -7,6 +7,7 @@ import {
 } from "@/types";
 import Tab from "./Tab";
 import TabGroup from "./TabGroup";
+import { Flex } from "@chakra-ui/react";
 
 // https://developer.chrome.com/docs/extensions/reference/tabGroups/#property-TAB_GROUP_ID_NONE
 const TAB_GROUP_ID_NONE = chrome.tabGroups.TAB_GROUP_ID_NONE;
@@ -98,9 +99,17 @@ function Window({
   }
 
   return (
-    <div className="border rounded-md shadow p-2 flex flex-wrap items-center gap-1">
+    <Flex
+      border={1}
+      rounded="md"
+      shadow="md"
+      p={2}
+      flexWrap="wrap"
+      alignItems="center"
+      gap={1}
+    >
       {tabs}
-    </div>
+    </Flex>
   );
 }
 

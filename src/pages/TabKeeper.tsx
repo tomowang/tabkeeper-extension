@@ -325,7 +325,7 @@ function TabKeeper() {
           action: ToolbarAction
         ) => void handleToolbarAction(tabs, action)}
       ></ToolBar>
-      <Flex wrap="wrap" mx="auto" gap={2}>
+      <Flex wrap="wrap" mx="auto" gap={2} w="full">
         {wins.map((win, index) => {
           // win.id may be undefined, use index for key
           return (
