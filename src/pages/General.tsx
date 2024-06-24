@@ -26,6 +26,30 @@ import { GoCommentDiscussion } from "react-icons/go";
 export default function General() {
   const manifest = chrome.runtime.getManifest();
   const toast = useToast();
+
+  const generalItems = [
+    {
+      icon: FaInfoCircle,
+      text: `Version ${manifest.version}`,
+      href: "https://github.com/tomowang/tabkeeper-extension/releases/latest",
+    },
+    {
+      icon: FaGithub,
+      text: "Open Source with MIT license (give a star if you like)",
+      href: "https://github.com/tomowang/tabkeeper-extension",
+    },
+    {
+      icon: FaBug,
+      text: "Fire an Issue",
+      href: "https://github.com/tomowang/tabkeeper-extension/issues",
+    },
+    {
+      icon: GoCommentDiscussion,
+      text: "Feature request and general discussions",
+      href: "https://github.com/tomowang/tabkeeper-extension/discussions",
+    },
+  ];
+
   function handleBackup() {
     chrome.storage.local.get(
       [S_KEY_AUTO_GROUP_RULES, S_KEY_SESSION_BOX],
@@ -89,6 +113,7 @@ export default function General() {
             <List spacing={2}>
               <ListItem>
                 <Button
+                  colorScheme="blue"
                   leftIcon={<FaDownload />}
                   variant="outline"
                   size="sm"
@@ -99,6 +124,7 @@ export default function General() {
               </ListItem>
               <ListItem>
                 <Button
+                  colorScheme="blue"
                   leftIcon={<FaUpload />}
                   variant="outline"
                   size="sm"
@@ -118,30 +144,14 @@ export default function General() {
           </CardHeader>
           <CardBody>
             <List spacing={2}>
-              <ListItem>
-                <ListIcon as={FaInfoCircle}></ListIcon>
-                <Link href="https://github.com/tomowang/tabkeeper-extension/releases/latest">
-                  Version {manifest.version}
-                </Link>
-              </ListItem>
-              <ListItem>
-                <ListIcon as={FaGithub}></ListIcon>
-                <Link href="https://github.com/tomowang/tabkeeper-extension">
-                  Open Source with MIT license (give a star if you like)
-                </Link>
-              </ListItem>
-              <ListItem>
-                <ListIcon as={FaBug}></ListIcon>
-                <Link href="https://github.com/tomowang/tabkeeper-extension/issues">
-                  Fire an Issue
-                </Link>
-              </ListItem>
-              <ListItem>
-                <ListIcon as={GoCommentDiscussion}></ListIcon>
-                <Link href="https://github.com/tomowang/tabkeeper-extension/discussions">
-                  Feature request and general discussions
-                </Link>
-              </ListItem>
+              {generalItems.map((item, index) => {
+                return (
+                  <ListItem key={index}>
+                    <ListIcon as={item.icon}></ListIcon>
+                    <Link href={item.href}>{item.text}</Link>
+                  </ListItem>
+                );
+              })}
               <ListItem>
                 <HStack>
                   <Image w={3} h={3} src="/images/logo-32.png" alt="Logo" />
