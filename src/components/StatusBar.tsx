@@ -26,10 +26,10 @@ export default function StatusBar({
   }
   return (
     <Card size="sm">
-      <CardBody className="max-w-full w-full">
+      <CardBody maxW="full" w="full">
         <Stack direction="column" spacing="0.5">
           {search && (
-            <Text className="truncate">
+            <Text textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
               <Badge variant="outline" colorScheme="yellow">
                 {selectedTabs.length}
               </Badge>
@@ -37,7 +37,7 @@ export default function StatusBar({
             </Text>
           )}
           {duplicationInfo.count > 0 && (
-            <Text className="truncate">
+            <Text textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
               <Badge variant="outline" colorScheme="yellow">
                 {duplicationInfo.totalCount}
               </Badge>
@@ -50,12 +50,19 @@ export default function StatusBar({
           )}
           {tab && (
             <>
-              <Text as="span" className="truncate">
+              <Text
+                as="span"
+                textOverflow="ellipsis"
+                overflow="hidden"
+                whiteSpace="nowrap"
+              >
                 {tab.title}
               </Text>
               <Text
                 as="span"
-                className="truncate"
+                textOverflow="ellipsis"
+                overflow="hidden"
+                whiteSpace="nowrap"
                 fontSize="sm"
                 color="gray.500"
               >
