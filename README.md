@@ -14,6 +14,13 @@ Features:
 -   Save your tabs to session box and restore them later
 -   Setup auto group rules that will group your tabs automatically
 
+TODO
+
+-   [ ] drag and drop for reordering/moving tabs
+-   [ ] window operations: close, activate, minimize, etc.
+-   [ ] performance optimization by debouncing
+-   [ ] i18n
+
 ## Development
 
 This project is created by command `pnpm create vite tabkeeper-extension`

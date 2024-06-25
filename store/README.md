@@ -10,13 +10,18 @@ TabKeeper is a browser extension that helps you manage your tabs and tab groups
 
 ## Description
 
-TabKeeper is a browser extension that helps you manage your tabs and tab groups.
-
 Create by tomowang with ❤️ <https://tomo.dev>
 
 Features:
 
 -   Tabs and tab groups management
+
+    -   reload, unload
+    -   pin/unpin
+    -   mute/unmute
+    -   highlight/unhightlight
+    -   duplicate/de-duplicate
+
 -   Save your tabs to session box and restore them later
 -   Setup auto group rules that will group your tabs automatically
 -   Free and open source - <https://github.com/tomowang/tabkeeper-extension>
