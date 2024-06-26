@@ -38,3 +38,6 @@ export const EXTENSION_BADGE_COLOR = "#1B74E8";
 
 export const S_KEY_AUTO_GROUP_RULES = "autoGroupRules";
 export const S_KEY_SESSION_BOX = "sessionBox";
+
+export const STORE_LINK_CHROME =
+  "https://chromewebstore.google.com/detail/tabkeeper-manages-tabs-an/difffcgldeegfdijdbjhnmchahphknch";

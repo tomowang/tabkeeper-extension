@@ -1,4 +1,8 @@
-import { S_KEY_AUTO_GROUP_RULES, S_KEY_SESSION_BOX } from "@/utils/const";
+import {
+  STORE_LINK_CHROME,
+  S_KEY_AUTO_GROUP_RULES,
+  S_KEY_SESSION_BOX,
+} from "@/utils/const";
 import {
   Button,
   Card,
@@ -22,6 +26,7 @@ import {
   FaBug,
 } from "react-icons/fa";
 import { GoCommentDiscussion } from "react-icons/go";
+import { MdOutlineStarRate } from "react-icons/md";
 
 export default function General() {
   const manifest = chrome.runtime.getManifest();
@@ -49,6 +54,19 @@ export default function General() {
       href: "https://github.com/tomowang/tabkeeper-extension/discussions",
     },
   ];
+
+  let browser = "Chrome";
+  if (navigator.userAgent.indexOf("Edg") !== -1) {
+    browser = "Edge";
+  }
+
+  if (browser === "Chrome") {
+    generalItems.push({
+      icon: MdOutlineStarRate,
+      text: "Leave a review on the Chrome Web Store",
+      href: STORE_LINK_CHROME,
+    });
+  }
 
   function handleBackup() {
     chrome.storage.local.get(
@@ -148,14 +166,19 @@ export default function General() {
                 return (
                   <ListItem key={index}>
                     <ListIcon as={item.icon}></ListIcon>
-                    <Link href={item.href}>{item.text}</Link>
+                    <Link href={item.href} target="_blank">
+                      {item.text}
+                    </Link>
                   </ListItem>
                 );
               })}
               <ListItem>
                 <HStack>
                   <Image w={3} h={3} src="/images/logo-32.png" alt="Logo" />
-                  <Link href="https://www.flaticon.com/free-icons/tabs">
+                  <Link
+                    href="https://www.flaticon.com/free-icons/tabs"
+                    target="_blank"
+                  >
                     Tabs icons created by Freepik - Flaticon
                   </Link>
                 </HStack>
