@@ -1,5 +1,6 @@
 import {
   STORE_LINK_CHROME,
+  STORE_LINK_EDGE,
   S_KEY_AUTO_GROUP_RULES,
   S_KEY_SESSION_BOX,
 } from "@/utils/const";
@@ -65,6 +66,12 @@ export default function General() {
       icon: MdOutlineStarRate,
       text: "Leave a review on the Chrome Web Store",
       href: STORE_LINK_CHROME,
+    });
+  } else if (browser === "Edge") {
+    generalItems.push({
+      icon: MdOutlineStarRate,
+      text: "Leave a review on the Microsoft Edge Add-ons",
+      href: STORE_LINK_EDGE,
     });
   }
 

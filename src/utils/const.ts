@@ -41,3 +41,6 @@ export const S_KEY_SESSION_BOX = "sessionBox";
 
 export const STORE_LINK_CHROME =
   "https://chromewebstore.google.com/detail/tabkeeper-manages-tabs-an/difffcgldeegfdijdbjhnmchahphknch";
+
+export const STORE_LINK_EDGE =
+  "https://microsoftedge.microsoft.com/addons/detail/tabkeeper-manages-tabs-/pkmemnbofihhbgeejnipajkjanjhjhkc";
