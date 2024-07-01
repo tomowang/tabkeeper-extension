@@ -35,6 +35,7 @@ export const tabGroupColorMap: Record<string, string> = {
 };
 
 export const EXTENSION_BADGE_COLOR = "#1B74E8";
+export const EXTENSION_BADGE_TEXT_COLOR = "#FFFFFF";
 
 export const S_KEY_AUTO_GROUP_RULES = "autoGroupRules";
 export const S_KEY_SESSION_BOX = "sessionBox";

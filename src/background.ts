@@ -1,5 +1,9 @@
 import { IAutoGroupRule } from "./types";
-import { EXTENSION_BADGE_COLOR, S_KEY_AUTO_GROUP_RULES } from "./utils/const";
+import {
+  EXTENSION_BADGE_COLOR,
+  EXTENSION_BADGE_TEXT_COLOR,
+  S_KEY_AUTO_GROUP_RULES,
+} from "./utils/const";
 
 chrome.runtime.onInstalled.addListener(() => {
   console.log("tabkeeper is installed");
@@ -14,6 +18,7 @@ async function onTabsUpdated() {
     text = length.toString();
   }
   await chrome.action.setBadgeText({ text });
+  await chrome.action.setBadgeTextColor({ color: EXTENSION_BADGE_TEXT_COLOR });
   await chrome.action.setBadgeBackgroundColor({ color: EXTENSION_BADGE_COLOR });
 }
 
