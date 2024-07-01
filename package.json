@@ -1,7 +1,7 @@
 {
   "name": "tabkeeper-extension",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "TabKeeper is a browser extension that helps you manage your tabs and tab groups",
   "author": {
