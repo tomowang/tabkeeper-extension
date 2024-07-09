@@ -76,6 +76,10 @@ chrome.tabs.onUpdated.addListener(
   (_: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
     // only apply when url is changed
     if (!changeInfo.url) return;
-    void autoGroupTab(tab);
+    chrome.windows.get(tab.windowId, (win) => {
+      if (win.type === "normal") {
+        void autoGroupTab(tab);
+      }
+    });
   }
 );
