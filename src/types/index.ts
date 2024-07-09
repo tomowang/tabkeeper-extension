@@ -60,6 +60,7 @@ export enum ToolbarAction {
 }
 
 export interface IAutoGroupRule {
+  id: number;
   title: string;
   color: chrome.tabGroups.ColorEnum;
   mode: "wildcard" | "regex";

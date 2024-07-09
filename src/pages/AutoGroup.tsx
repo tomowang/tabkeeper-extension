@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import AutoGroupItem from "@/components/AutoGroupItem";
+import AutoGroupItem, {
+  SortableAutoGroupItem,
+} from "@/components/AutoGroupItem";
 import { IAutoGroupRule } from "@/types";
 import {
   Badge,
@@ -13,6 +15,8 @@ import {
 import { S_KEY_AUTO_GROUP_RULES, tabGroupColors } from "@/utils/const";
 import { FaSave, FaRegPlusSquare } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 
 export default function AutoGroup() {
   const toast = useToast();
@@ -21,7 +25,14 @@ export default function AutoGroup() {
   useEffect(() => {
     chrome.storage.local.get(S_KEY_AUTO_GROUP_RULES, ({ autoGroupRules }) => {
       if (autoGroupRules) {
-        setItems(autoGroupRules as IAutoGroupRule[]);
+        const rules = autoGroupRules as IAutoGroupRule[];
+        const now = Date.now();
+        // compatible with previous settings
+        for (let i = 0; i < rules.length; i++) {
+          // Date.now() may be the same in for loop
+          if (rules[i].id === undefined) rules[i].id = i + now;
+        }
+        setItems(rules);
       }
     });
   }, []);
@@ -48,6 +59,7 @@ export default function AutoGroup() {
   }
   function handleAdd() {
     const item: IAutoGroupRule = {
+      id: Date.now(),
       title: "",
       color: tabGroupColors[items.length % tabGroupColors.length],
       mode: "wildcard",
@@ -108,6 +120,29 @@ export default function AutoGroup() {
   function handelUpdateNewItem(item: IAutoGroupRule) {
     setNewItem(item);
   }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setItems((items) => {
+        const oldId = active.id as number;
+        const newId = over.id as number;
+        let oldIndex = -1;
+        let newIndex = -1;
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].id === newId) {
+            newIndex = i;
+          } else if (items[i].id === oldId) {
+            oldIndex = i;
+          }
+        }
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        void chrome.storage.local.set({ [S_KEY_AUTO_GROUP_RULES]: newItems });
+        return newItems;
+      });
+    }
+  }
+
   return (
     <>
       <HStack mb={2}>
@@ -119,20 +154,24 @@ export default function AutoGroup() {
         </Badge>
       </HStack>
       <VStack spacing={2}>
-        {items.map((item, index) => {
-          return (
-            <AutoGroupItem
-              key={index}
-              item={item}
-              handleUpdate={(item: IAutoGroupRule) => {
-                handleUpdate(index, item);
-              }}
-              handleDelete={() => {
-                handleDeleteItem(index);
-              }}
-            ></AutoGroupItem>
-          );
-        })}
+        <DndContext onDragEnd={handleDragEnd}>
+          <SortableContext items={items}>
+            {items.map((item, index) => {
+              return (
+                <SortableAutoGroupItem
+                  key={item.id}
+                  item={item}
+                  handleUpdate={(item: IAutoGroupRule) => {
+                    handleUpdate(index, item);
+                  }}
+                  handleDelete={() => {
+                    handleDeleteItem(index);
+                  }}
+                ></SortableAutoGroupItem>
+              );
+            })}
+          </SortableContext>
+        </DndContext>
         {newItem && (
           <AutoGroupItem
             item={newItem}

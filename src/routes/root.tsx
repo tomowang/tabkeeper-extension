@@ -22,7 +22,7 @@ export default function Root() {
           })}
         </ul>
       </Box>
-      <Box as="main" w="80%" p={2} overflowY="auto">
+      <Box as="main" w="80%" p={2} overflowY="auto" overflowX="hidden">
         <Outlet />
       </Box>
     </Flex>
